@@ -147,7 +147,7 @@ export const StationCard: React.FC<StationCardProps> = memo(({
 
       <div className="p-3 flex flex-col items-center justify-center h-full min-h-[140px]">
         {/* Centered Play Button */}
-        <div className="flex-1 flex items-center justify-center mb-2">
+        <div className="flex-1 flex items-center justify-center mb-1">
           <StationCardButton
             station={station}
             isPlaying={isPlaying}

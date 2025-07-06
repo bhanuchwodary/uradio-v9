@@ -172,7 +172,7 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
         )}
         
         {/* Main Play Button - Centered */}
-        <div className="flex-1 flex items-center justify-center mb-2">
+        <div className="flex-1 flex items-center justify-center mb-1">
           <StationCardButton
             station={station}
             isPlaying={isPlaying}
