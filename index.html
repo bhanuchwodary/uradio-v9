@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Uradio</title>
+    <meta name="description" content="Modern Radio Streaming Application" />
+    <meta name="author" content="Uradio" />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" href="/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png" type="image/png" />
+    <link rel="alternate icon" href="/favicon.ico" type="image/x-icon" />
+    
+    <!-- iOS specific meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Uradio" />
+    <meta name="theme-color" content="#8B5CF6" />
+    <meta name="msapplication-TileColor" content="#8B5CF6" />
+    <meta name="msapplication-navbutton-color" content="#8B5CF6" />
+    
+    <!-- Enhanced PWA meta tags -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Uradio" />
+    <meta name="msapplication-starturl" content="/" />
+    <meta name="msapplication-config" content="none" />
+    
+    <!-- Prevent iOS zoom on input focus -->
+    <meta name="format-detection" content="telephone=no" />
+    
+    <!-- iOS home screen icons -->
+    <link rel="apple-touch-icon" href="/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png" />
+    
+    <!-- iOS splash screen -->
+    <link rel="apple-touch-startup-image" href="/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png" />
+    
+    <!-- Google Fonts for handwritten tagline -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Enhanced PWA Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('Uradio: SW registered successfully', registration);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                console.log('Uradio: SW update found');
+              });
+            })
+            .catch((registrationError) => {
+              console.error('Uradio: SW registration failed:', registrationError);
+            });
+        });
+      } else {
+        console.log('Uradio: Service Worker not supported');
+      }
+
+      // Enhanced PWA install prompt handling
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('Uradio: PWA install prompt is available');
+        e.preventDefault();
+        deferredPrompt = e;
+        // Trigger custom install UI
+        window.dispatchEvent(new CustomEvent('pwa-installable'));
+      });
+
+      // Handle app installation
+      window.addEventListener('appinstalled', () => {
+        console.log('Uradio: PWA was installed');
+        deferredPrompt = null;
+      });
+
+      // Check if running as PWA
+      if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+        console.log('Uradio: Running as installed PWA');
+        document.body.classList.add('pwa-installed');
+      } else {
+        console.log('Uradio: Running in browser');
+      }
+    </script>
+  </body>
+</html>

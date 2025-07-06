@@ -1,0 +1,488 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Material Design 3 Light Theme Colors */
+    --background: 254 254 254;
+    --foreground: 16 16 16;
+    
+    --surface: 254 254 254;
+    --surface-dim: 231 231 231;
+    --surface-bright: 254 254 254;
+    --surface-container-lowest: 255 255 255;
+    --surface-container-low: 247 247 247;
+    --surface-container: 241 241 241;
+    --surface-container-high: 236 236 236;
+    --surface-container-highest: 230 230 230;
+    
+    --on-surface: 16 16 16;
+    --on-surface-variant: 68 68 68;
+    
+    --primary: 103 80 164;
+    --primary-container: 234 221 255;
+    --on-primary: 255 255 255;
+    --on-primary-container: 33 0 93;
+    
+    --secondary: 98 91 113;
+    --secondary-container: 231 222 248;
+    --on-secondary: 255 255 255;
+    --on-secondary-container: 30 25 43;
+    
+    --tertiary: 125 82 96;
+    --tertiary-container: 255 216 228;
+    --on-tertiary: 255 255 255;
+    --on-tertiary-container: 55 11 30;
+    
+    --error: 186 26 26;
+    --error-container: 255 218 214;
+    --on-error: 255 255 255;
+    --on-error-container: 65 0 2;
+    
+    --outline: 121 116 126;
+    --outline-variant: 196 199 197;
+    
+    /* Legacy compatibility */
+    --card: var(--surface-container);
+    --card-foreground: var(--on-surface);
+    --popover: var(--surface-container);
+    --popover-foreground: var(--on-surface);
+    --muted: var(--surface-container-high);
+    --muted-foreground: var(--on-surface-variant);
+    --accent: var(--secondary-container);
+    --accent-foreground: var(--on-secondary-container);
+    --destructive: var(--error);
+    --destructive-foreground: var(--on-error);
+    --border: var(--outline-variant);
+    --input: var(--outline-variant);
+    --ring: var(--primary);
+    --radius: 1rem;
+
+    /* Sidebar colors */
+    --sidebar-background: var(--surface-container);
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--secondary-container);
+    --sidebar-accent-foreground: var(--on-secondary-container);
+    --sidebar-border: var(--outline-variant);
+    --sidebar-ring: var(--primary);
+  }
+
+  .dark {
+    /* Material Design 3 Dark Theme Colors */
+    --background: 16 16 20;
+    --foreground: 230 225 229;
+    
+    --surface: 16 16 20;
+    --surface-dim: 16 16 20;
+    --surface-bright: 59 56 62;
+    --surface-container-lowest: 10 10 13;
+    --surface-container-low: 22 22 26;
+    --surface-container: 30 29 32;
+    --surface-container-high: 40 39 43;
+    --surface-container-highest: 49 48 51;
+    
+    --on-surface: 230 225 229;
+    --on-surface-variant: 196 199 197;
+    
+    --primary: 208 188 255;
+    --primary-container: 79 55 139;
+    --on-primary: 56 30 114;
+    --on-primary-container: 234 221 255;
+    
+    --secondary: 203 194 220;
+    --secondary-container: 74 68 88;
+    --on-secondary: 51 45 65;
+    --on-secondary-container: 231 222 248;
+    
+    --tertiary: 227 187 200;
+    --tertiary-container: 99 59 72;
+    --on-tertiary: 80 37 50;
+    --on-tertiary-container: 255 216 228;
+    
+    --error: 255 180 171;
+    --error-container: 147 0 10;
+    --on-error: 105 0 5;
+    --on-error-container: 255 218 214;
+    
+    --outline: 147 143 153;
+    --outline-variant: 68 71 78;
+    
+    /* Legacy compatibility */
+    --card: var(--surface-container);
+    --card-foreground: var(--on-surface);
+    --popover: var(--surface-container);
+    --popover-foreground: var(--on-surface);
+    --muted: var(--surface-container-high);
+    --muted-foreground: var(--on-surface-variant);
+    --accent: var(--secondary-container);
+    --accent-foreground: var(--on-secondary-container);
+    --destructive: var(--error);
+    --destructive-foreground: var(--on-error);
+    --border: var(--outline-variant);
+    --input: var(--outline-variant);
+    --ring: var(--primary);
+
+    /* Sidebar colors */
+    --sidebar-background: var(--surface-container);
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--secondary-container);
+    --sidebar-accent-foreground: var(--on-secondary-container);
+    --sidebar-border: var(--outline-variant);
+    --sidebar-ring: var(--primary);
+  }
+
+  .metallic {
+    /* Black Metallic Theme */
+    --background: 20 20 22; /* #141416 */
+    --foreground: 220 220 220; /* #dcdcdc */
+    
+    --surface: 28 28 30; /* #1c1c1e */
+    --surface-dim: 20 20 22;
+    --surface-bright: 52 52 56;
+    --surface-container-lowest: 16 16 18; /* #101012 */
+    --surface-container-low: 28 28 30;
+    --surface-container: 36 36 40; /* #242428 */
+    --surface-container-high: 44 44 48; /* #2c2c30 */
+    --surface-container-highest: 52 52 56; /* #343438 */
+    
+    --on-surface: 220 220 220;
+    --on-surface-variant: 180 180 180;
+    
+    --primary: 176 190 197; /* #b0bec5 - Blue Grey 100 */
+    --primary-container: 55 71 79; /* #37474f - Blue Grey 800 */
+    --on-primary: 10 10 10;
+    --on-primary-container: 207 216 220; /* #cfd8dc - Blue Grey 50 */
+    
+    --secondary: 158 158 158; /* #9e9e9e - Grey 500 */
+    --secondary-container: 69 90 100; /* #455a64 - Blue Grey 700 */
+    --on-secondary: 10 10 10;
+    --on-secondary-container: 207 216 220; /* #cfd8dc */
+    
+    --tertiary: 227 187 200;
+    --tertiary-container: 99 59 72;
+    --on-tertiary: 80 37 50;
+    --on-tertiary-container: 255 216 228;
+    
+    --error: 255 180 171;
+    --error-container: 147 0 10;
+    --on-error: 105 0 5;
+    --on-error-container: 255 218 214;
+    
+    --outline: 97 97 97; /* #616161 */
+    --outline-variant: 70 70 70; /* #464646 */
+    
+    /* Legacy compatibility */
+    --card: var(--surface-container);
+    --card-foreground: var(--on-surface);
+    --popover: var(--surface-container);
+    --popover-foreground: var(--on-surface);
+    --muted: var(--surface-container-high);
+    --muted-foreground: var(--on-surface-variant);
+    --accent: var(--secondary-container);
+    --accent-foreground: var(--on-secondary-container);
+    --destructive: var(--error);
+    --destructive-foreground: var(--on-error);
+    --border: var(--outline-variant);
+    --input: var(--outline-variant);
+    --ring: var(--primary);
+
+    /* Sidebar colors */
+    --sidebar-background: var(--surface-container);
+    --sidebar-foreground: var(--on-surface);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--on-primary);
+    --sidebar-accent: var(--secondary-container);
+    --sidebar-accent-foreground: var(--on-secondary-container);
+    --sidebar-border: var(--outline-variant);
+    --sidebar-ring: var(--primary);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body, #root {
+    @apply h-full w-full m-0 p-0 overflow-x-hidden font-sans;
+    -webkit-overflow-scrolling: touch;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    font-size: max(16px, 1rem);
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  input, select, textarea {
+    font-size: max(16px, 1rem) !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    background-clip: padding-box;
+    font-family: inherit;
+  }
+  
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    font-family: inherit;
+  }
+}
+
+/* Enhanced Material Design 3 Utilities */
+@layer utilities {
+  /* Material Design 3 Elevation System */
+  .elevation-0 {
+    box-shadow: none;
+  }
+  
+  .elevation-1 {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  }
+  
+  .elevation-2 {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  }
+  
+  .elevation-3 {
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+  }
+  
+  .elevation-4 {
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+  }
+  
+  .elevation-5 {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Ripple Effect for Buttons */
+  .ink-ripple {
+    position: relative;
+    overflow: hidden;
+    /* For safari bug */
+    transform: translateZ(0); 
+  }
+
+  .ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple 600ms linear;
+    @apply bg-white/70;
+  }
+
+  .dark .ripple-effect {
+    @apply bg-black/30;
+  }
+
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  /* Material Design 3 Surface Colors */
+  .surface-container-lowest {
+    @apply bg-[rgb(var(--surface-container-lowest))];
+  }
+  
+  .surface-container-low {
+    @apply bg-[rgb(var(--surface-container-low))];
+  }
+  
+  .surface-container {
+    @apply bg-[rgb(var(--surface-container))];
+  }
+  
+  .surface-container-high {
+    @apply bg-[rgb(var(--surface-container-high))];
+  }
+  
+  .surface-container-highest {
+    @apply bg-[rgb(var(--surface-container-highest))];
+  }
+
+  /* Enhanced transitions */
+  .material-transition {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .material-transition-fast {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .material-transition-slow {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  /* Enhanced responsive utilities */
+  .responsive-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .responsive-padding {
+    @apply px-4 sm:px-6 md:px-8;
+  }
+  
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+  }
+  
+  /* Enhanced iOS Safe Area Support */
+  .ios-safe-top {
+    padding-top: max(env(safe-area-inset-top), 1rem);
+  }
+  
+  .ios-safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+  }
+  
+  .ios-safe-left {
+    padding-left: max(env(safe-area-inset-left), 0px);
+  }
+  
+  .ios-safe-right {
+    padding-right: max(env(safe-area-inset-right), 0px);
+  }
+  
+  .ios-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .ios-vh-fix {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  .ios-no-bounce {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .ios-smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Enhanced glassmorphism effects */
+  .glass-surface {
+    @apply backdrop-blur-xl bg-surface-container/90 border-outline-variant/20;
+  }
+  
+  .glass-primary {
+    @apply backdrop-blur-xl bg-primary-container/80 border-primary/20;
+  }
+
+  /* Enhanced metallic theme contouring */
+  .metallic body,
+  .metallic h1,
+  .metallic h2,
+  .metallic h3,
+  .metallic p,
+  .metallic span,
+  .metallic a,
+  .metallic button,
+  .metallic label {
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  }
+
+  .metallic svg {
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
+  }
+
+  .metallic .elevation-1 {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5), 0px 1px 3px 1px rgba(0, 0, 0, 0.3);
+  }
+  .metallic .elevation-2 {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.5), 0px 2px 6px 2px rgba(0, 0, 0, 0.3);
+  }
+  .metallic .elevation-3 {
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.5), 0px 4px 8px 3px rgba(0, 0, 0, 0.3);
+  }
+  .metallic .elevation-4 {
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5), 0px 6px 10px 4px rgba(0, 0, 0, 0.3);
+  }
+  .metallic .elevation-5 {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5), 0px 8px 12px 6px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Enhanced iOS specific improvements */
+@supports (-webkit-touch-callout: none) {
+  .ios-vh-fix {
+    height: 100vh;
+    height: -webkit-fill-available;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  .ios-no-bounce {
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+  }
+  
+  .ios-smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  input, select, textarea {
+    font-size: max(16px, 1rem) !important;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .bottom-nav-ios {
+    padding-bottom: max(calc(env(safe-area-inset-bottom) + 0.5rem), 1rem);
+  }
+  
+  input, select, textarea, button {
+    @apply text-base ios-touch-target;
+    font-size: max(16px, 1rem) !important;
+  }
+  
+  .touch-target {
+    @apply ios-touch-target;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .responsive-grid {
+    @apply grid-cols-2 lg:grid-cols-3;
+  }
+  
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+@media screen and (orientation: landscape) and (max-device-width: 896px) {
+  .ios-landscape-fix {
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
+  }
+}

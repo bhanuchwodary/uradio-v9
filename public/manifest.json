@@ -1,0 +1,70 @@
+
+{
+  "name": "Uradio - Internet Radio Streaming",
+  "short_name": "Uradio",
+  "description": "Modern Internet Radio Streaming Application",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#8B5CF6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["music", "entertainment"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open Playlist",
+      "short_name": "Playlist",
+      "description": "Open your radio playlist",
+      "url": "/playlist",
+      "icons": [
+        {
+          "src": "/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Add Station",
+      "short_name": "Add",
+      "description": "Add a new radio station",
+      "url": "/add-station",
+      "icons": [
+        {
+          "src": "/lovable-uploads/92c8140b-84fe-439c-a2f8-4d1758ab0998.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
