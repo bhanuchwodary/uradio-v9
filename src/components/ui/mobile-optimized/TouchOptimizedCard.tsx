@@ -96,23 +96,21 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden group transition-all duration-300 cursor-pointer h-full",
-        "border-0 backdrop-blur-md elevation-2 aspect-square rounded-3xl",
+        "relative overflow-hidden group transition-all duration-200 cursor-pointer h-full",
+        "border-0 backdrop-blur-sm elevation-1 aspect-square",
         // Enhanced touch feedback
-        "active:scale-95 touch-manipulation hover:elevation-4",
+        "active:scale-95 touch-manipulation",
         // Better mobile styling
-        "min-h-[160px] sm:min-h-[180px] shadow-lg",
-        // State-based styling with improved gradients
-        "bg-gradient-to-br transition-all duration-300 ease-out",
-        // Enhanced press state
-        isPressed && "scale-95 brightness-95 shadow-2xl",
+        "min-h-[140px] sm:min-h-[160px]",
+        // State-based styling
+        isPressed && "scale-95 brightness-90",
         isSelected 
-          ? "from-primary/25 via-primary/15 to-primary/5 ring-2 ring-primary/40 shadow-primary/20" 
+          ? "bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg ring-2 ring-primary/30" 
           : inPlaylist && actionIcon === "add"
-          ? "from-emerald-500/15 via-emerald-500/8 to-emerald-500/3 ring-1 ring-emerald-500/30 shadow-emerald-500/10"
+          ? "bg-gradient-to-br from-green-500/10 to-green-500/5 shadow-md ring-1 ring-green-500/20"
           : isProcessing
-          ? "from-blue-500/15 via-blue-500/8 to-blue-500/3 ring-1 ring-blue-500/30 shadow-blue-500/10"
-          : "from-surface-container-high/90 via-surface-container/70 to-surface-container-low/50 hover:from-secondary-container/60 hover:via-secondary-container/40 hover:to-secondary-container/20",
+          ? "bg-gradient-to-br from-blue-500/10 to-blue-500/5 shadow-md ring-1 ring-blue-500/20"
+          : "bg-gradient-to-br from-surface-container/80 to-surface-container/60 hover:from-accent/40 hover:to-accent/20",
         // Disable interactions if disabled
         isDisabled && "cursor-default opacity-60"
       )}
@@ -124,28 +122,22 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
       tabIndex={0}
       aria-label={`${actionIcon === "add" ? "Add" : "Play"} ${station.name}`}
     >
-      <div className="p-4 flex flex-col items-center justify-center h-full relative">
-        {/* Ambient Background Glow */}
-        <div className={cn(
-          "absolute inset-0 rounded-3xl transition-opacity duration-500",
-          isSelected && "bg-gradient-to-br from-primary/5 to-primary/0 animate-pulse"
-        )} />
-        
+      <div className="p-3 flex flex-col items-center justify-center h-full relative">
         {/* Favorite Button - Top Left */}
         {onToggleFavorite && (
-          <div className="absolute top-3 left-3 z-10">
+          <div className="absolute top-2 left-2 z-10">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onToggleFavorite();
               }}
               className={cn(
-                "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300",
-                "bg-surface-container-highest/90 backdrop-blur-md shadow-lg border border-outline-variant/20",
-                "active:scale-90 touch-manipulation hover:scale-110",
+                "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
+                "bg-surface-container/80 backdrop-blur-sm shadow-sm",
+                "active:scale-90 touch-manipulation",
                 station.isFavorite 
-                  ? "text-amber-500 bg-amber-500/10 border-amber-500/30 shadow-amber-500/20" 
-                  : "text-on-surface-variant hover:text-amber-500 hover:bg-amber-500/5"
+                  ? "text-yellow-500" 
+                  : "text-on-surface-variant hover:text-yellow-500"
               )}
               aria-label={station.isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
@@ -158,17 +150,17 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
 
         {/* Delete Button - Top Right */}
         {onDelete && (
-          <div className="absolute top-3 right-3 z-10">
+          <div className="absolute top-2 right-2 z-10">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();
               }}
               className={cn(
-                "w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300",
-                "bg-surface-container-highest/90 backdrop-blur-md shadow-lg border border-outline-variant/20",
-                "active:scale-90 touch-manipulation hover:scale-110",
-                "text-error hover:bg-error/10 hover:border-error/30 hover:shadow-error/20"
+                "w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
+                "bg-surface-container/80 backdrop-blur-sm shadow-sm",
+                "active:scale-90 touch-manipulation",
+                "text-destructive hover:bg-destructive/10"
               )}
               aria-label={context === "playlist" ? "Remove from playlist" : "Delete station"}
             >
@@ -180,7 +172,7 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
         )}
         
         {/* Main Play Button - Centered */}
-        <div className="flex-1 flex items-center justify-center mb-2 relative z-10">
+        <div className="flex-1 flex items-center justify-center mb-1">
           <StationCardButton
             station={station}
             isPlaying={isPlaying}
@@ -196,7 +188,7 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
         </div>
         
         {/* Station Info - Bottom */}
-        <div className="w-full mt-auto relative z-10">
+        <div className="w-full mt-auto">
           <StationCardInfo
             station={station}
             isSelected={isSelected}

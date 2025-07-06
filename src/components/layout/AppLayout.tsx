@@ -20,12 +20,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   }, [volume]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-background to-surface-container-low dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce relative overflow-hidden">
-      {/* Enhanced background pattern */}
-      <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_rgba(120,119,198,0.3),_transparent_50%),_radial-gradient(circle_at_80%_20%,_rgba(255,119,198,0.3),_transparent_50%),_radial-gradient(circle_at_40%_40%,_rgba(120,200,255,0.3),_transparent_50%)]" />
-      </div>
-      
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-surface to-surface-container dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce">
       <AppHeader randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />
       <div
         className={cn(

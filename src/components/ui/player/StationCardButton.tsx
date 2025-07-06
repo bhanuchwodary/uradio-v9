@@ -22,25 +22,24 @@ export const StationCardButton: React.FC<StationCardButtonProps> = ({
   return (
     <div 
       className={cn(
-        "w-14 h-14 rounded-full flex items-center justify-center transition-all duration-500 shadow-xl",
-        "transform group-hover:scale-110 group-active:scale-95 relative overflow-hidden backdrop-blur-md",
-        "before:absolute before:inset-0 before:rounded-full before:transition-all before:duration-300",
+        "w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-md",
+        "transform group-hover:scale-110 group-active:scale-95",
         isPlaying 
-          ? "bg-gradient-to-br from-primary via-primary/90 to-primary/70 text-primary-foreground shadow-primary/40 ring-2 ring-primary/30" 
+          ? "bg-primary text-primary-foreground shadow-lg" 
           : inPlaylist && actionIcon === "add"
-          ? "bg-gradient-to-br from-emerald-500/20 via-emerald-500/15 to-emerald-500/10 text-emerald-600 border-2 border-emerald-500/40 shadow-emerald-500/20"
+          ? "bg-green-500/20 text-green-600 border border-green-500/30"
           : isProcessing
-          ? "bg-gradient-to-br from-blue-500/20 via-blue-500/15 to-blue-500/10 text-blue-600 border-2 border-blue-500/40 shadow-blue-500/20 animate-pulse"
-          : "bg-gradient-to-br from-surface-container-highest via-surface-container-high to-surface-container text-on-surface group-hover:from-secondary-container/80 group-hover:via-secondary-container/60 group-hover:to-secondary-container/40 group-hover:text-on-secondary-container",
+          ? "bg-blue-500/20 text-blue-600 border border-blue-500/30 animate-pulse"
+          : "bg-secondary/80 text-secondary-foreground group-hover:bg-primary/30",
         // Disable hover scale if already in playlist or being processed
-        isDisabled && "group-hover:scale-100 opacity-60"
+        isDisabled && "group-hover:scale-100"
       )}
       onClick={onClick}
     >
       <ActionIcon className={cn(
-        "transition-all duration-300 drop-shadow-sm",
+        "transition-transform duration-200",
         actionIcon !== "add" && !isPlaying && "ml-0.5",
-        "w-6 h-6"
+        "w-5 h-5"
       )} />
     </div>
   );
