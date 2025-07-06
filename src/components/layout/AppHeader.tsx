@@ -76,13 +76,17 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-surface-container/95 backdrop-blur-lg border-b border-outline-variant/20 z-20 elevation-1 ios-safe-left ios-safe-right" style={{ 
+    <header className="fixed top-0 left-0 right-0 bg-surface-container/98 backdrop-blur-xl border-b border-outline-variant/30 z-20 elevation-3 ios-safe-left ios-safe-right shadow-xl" style={{ 
       paddingTop: 'max(env(safe-area-inset-top), 0px)',
-      height: 'calc(5rem + max(env(safe-area-inset-top), 0px))'
+      height: 'calc(5rem + max(env(safe-area-inset-top), 0px))',
+      background: 'linear-gradient(135deg, rgb(var(--surface-container))/0.98, rgb(var(--surface-container-high))/0.95)'
     }}>
-      <div className="container mx-auto flex items-center h-full px-4 gap-4 w-full" style={{ minHeight: '5rem' }}>
+      <div className="container mx-auto flex items-center h-full px-4 gap-4 w-full relative" style={{ minHeight: '5rem' }}>
+        {/* Subtle header glow effect */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-50" />
+        
         {/* Logo and Tagline */}
-        <div className="flex-shrink-0 flex flex-col items-center">
+        <div className="flex-shrink-0 flex flex-col items-center relative z-10">
           <img
             src={getLogoSrc()}
             alt="uRadio"
@@ -94,7 +98,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
         
         {/* Main Info/Controls - THIS IS THE ONLY PLAYER IN THE APP */}
-        <div className="flex flex-1 min-w-0 items-center">
+        <div className="flex flex-1 min-w-0 items-center relative z-10">
           {currentTrack ? (
             <div className="flex items-center w-full gap-2 sm:gap-3">
               {/* Station Info */}
