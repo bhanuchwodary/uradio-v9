@@ -2,6 +2,7 @@
 import React, { memo, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Star, Trash2, Edit } from "lucide-react";
 import { StationCardButton } from "./StationCardButton";
 import { StationCardInfo } from "./StationCardInfo";
 import { StationCardActions } from "./StationCardActions";
@@ -57,7 +58,7 @@ export const StationCard: React.FC<StationCardProps> = memo(({
       className={cn(
         "relative overflow-hidden group material-transition cursor-pointer h-full ios-touch-target",
         "transform hover:scale-105 active:scale-95 border-0 backdrop-blur-sm elevation-1 hover:elevation-3",
-        "hover:shadow-xl hover:-translate-y-1",
+        "hover:shadow-xl hover:-translate-y-1 aspect-square",
         isSelected 
           ? "bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg ring-2 ring-primary/30" 
           : inPlaylist && actionIcon === "add"
@@ -79,38 +80,98 @@ export const StationCard: React.FC<StationCardProps> = memo(({
         }
       }}
     >
-      <div className="px-1.5 py-2 flex flex-col items-center space-y-1 h-full min-h-[120px]">
-        {/* Play Button */}
-        <StationCardButton
-          station={station}
-          isPlaying={isPlaying}
-          isSelected={isSelected}
-          actionIcon={actionIcon}
-          context={context}
-          inPlaylist={inPlaylist}
-          isAddingToPlaylist={isProcessing}
-          onClick={handlePlayClick}
-          isDisabled={isDisabled}
-          isProcessing={isProcessing}
-        />
+      {/* Favorite Button - Top Left */}
+      {onToggleFavorite && (
+        <div className="absolute top-2 left-2 z-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite();
+            }}
+            className={cn(
+              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
+              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
+              "active:scale-90 touch-manipulation",
+              station.isFavorite 
+                ? "text-yellow-500 bg-yellow-500/10" 
+                : "text-on-surface-variant hover:text-yellow-500"
+            )}
+            aria-label={station.isFavorite ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Star className={cn("h-3.5 w-3.5", station.isFavorite && "fill-current")} />
+          </button>
+        </div>
+      )}
+
+      {/* Delete Button - Top Right */}
+      {onDelete && (
+        <div className="absolute top-2 right-2 z-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onDelete();
+            }}
+            className={cn(
+              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
+              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
+              "active:scale-90 touch-manipulation",
+              "text-destructive hover:bg-destructive/10"
+            )}
+            aria-label={context === "playlist" ? "Remove from playlist" : "Delete station"}
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
+      {/* Edit Button - Top Right (when no delete) */}
+      {onEdit && !onDelete && !station.isFeatured && (
+        <div className="absolute top-2 right-2 z-10">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onEdit();
+            }}
+            className={cn(
+              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
+              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
+              "active:scale-90 touch-manipulation",
+              "text-blue-500 hover:bg-blue-500/10"
+            )}
+            aria-label="Edit station"
+          >
+            <Edit className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
+
+      <div className="p-3 flex flex-col items-center justify-center h-full min-h-[140px]">
+        {/* Centered Play Button */}
+        <div className="flex-1 flex items-center justify-center mb-2">
+          <StationCardButton
+            station={station}
+            isPlaying={isPlaying}
+            isSelected={isSelected}
+            actionIcon={actionIcon}
+            context={context}
+            inPlaylist={inPlaylist}
+            isAddingToPlaylist={isProcessing}
+            onClick={handlePlayClick}
+            isDisabled={isDisabled}
+            isProcessing={isProcessing}
+          />
+        </div>
         
-        {/* Station Info */}
-        <StationCardInfo
-          station={station}
-          isSelected={isSelected}
-          inPlaylist={inPlaylist}
-          isProcessing={isProcessing}
-          actionIcon={actionIcon}
-        />
-        
-        {/* Action Buttons */}
-        <StationCardActions
-          station={station}
-          context={context}
-          onToggleFavorite={onToggleFavorite}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
+        {/* Station Info - Bottom */}
+        <div className="w-full mt-auto">
+          <StationCardInfo
+            station={station}
+            isSelected={isSelected}
+            inPlaylist={inPlaylist}
+            isProcessing={isProcessing}
+            actionIcon={actionIcon}
+          />
+        </div>
       </div>
     </Card>
   );

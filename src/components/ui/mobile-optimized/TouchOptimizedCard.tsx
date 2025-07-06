@@ -97,11 +97,11 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
     <Card 
       className={cn(
         "relative overflow-hidden group transition-all duration-200 cursor-pointer h-full",
-        "border-0 backdrop-blur-sm elevation-1",
+        "border-0 backdrop-blur-sm elevation-1 aspect-square",
         // Enhanced touch feedback
         "active:scale-95 touch-manipulation",
         // Better mobile styling
-        "min-h-[120px] sm:min-h-[140px]",
+        "min-h-[140px] sm:min-h-[160px]",
         // State-based styling
         isPressed && "scale-95 brightness-90",
         isSelected 
@@ -122,10 +122,10 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
       tabIndex={0}
       aria-label={`${actionIcon === "add" ? "Add" : "Play"} ${station.name}`}
     >
-      <div className="px-3 py-3 flex flex-col items-center space-y-2 h-full relative">
-        {/* Absolute positioned action buttons for better touch targets */}
-        <div className="absolute top-2 left-2 z-10">
-          {onToggleFavorite && (
+      <div className="p-3 flex flex-col items-center justify-center h-full relative">
+        {/* Favorite Button - Top Left */}
+        {onToggleFavorite && (
+          <div className="absolute top-2 left-2 z-10">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -145,11 +145,12 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
               </svg>
             </button>
-          )}
-        </div>
+          </div>
+        )}
 
-        <div className="absolute top-2 right-2 z-10">
-          {onDelete && (
+        {/* Delete Button - Top Right */}
+        {onDelete && (
+          <div className="absolute top-2 right-2 z-10">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -167,11 +168,11 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
                 <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c0-1 1-2 2-2v2"/>
               </svg>
             </button>
-          )}
-        </div>
+          </div>
+        )}
         
         {/* Main Play Button - Centered */}
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center mb-2">
           <StationCardButton
             station={station}
             isPlaying={isPlaying}
@@ -187,7 +188,7 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
         </div>
         
         {/* Station Info - Bottom */}
-        <div className="w-full">
+        <div className="w-full mt-auto">
           <StationCardInfo
             station={station}
             isSelected={isSelected}
