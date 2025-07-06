@@ -56,7 +56,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             size="icon"
             onClick={onPrevious}
             disabled={!currentTrack}
-            className="h-7 w-7 rounded-lg bg-surface-container/60 hover:bg-surface-container/80 border border-outline-variant/20 transition-all active:scale-95"
+            className="h-7 w-7 rounded-full bg-surface-container/60 hover:bg-surface-container/80 border border-outline-variant/20 transition-all active:scale-95"
           >
             <SkipBack className="h-3.5 w-3.5" />
           </Button>
@@ -66,7 +66,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             size="icon"
             onClick={onPlayPause}
             disabled={!currentTrack}
-            className="h-8 w-8 rounded-lg bg-primary hover:bg-primary/90 shadow-sm transition-all active:scale-95"
+            className="h-8 w-8 rounded-full bg-primary hover:bg-primary/90 shadow-sm transition-all active:scale-95"
           >
             {isPlaying ? (
               <Pause className="h-3.5 w-3.5" />
@@ -80,7 +80,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             size="icon"
             onClick={onNext}
             disabled={!currentTrack}
-            className="h-7 w-7 rounded-lg bg-surface-container/60 hover:bg-surface-container/80 border border-outline-variant/20 transition-all active:scale-95"
+            className="h-7 w-7 rounded-full bg-surface-container/60 hover:bg-surface-container/80 border border-outline-variant/20 transition-all active:scale-95"
           >
             <SkipForward className="h-3.5 w-3.5" />
           </Button>

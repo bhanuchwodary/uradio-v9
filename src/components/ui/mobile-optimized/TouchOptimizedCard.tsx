@@ -136,7 +136,7 @@ export const TouchOptimizedCard: React.FC<StationCardProps> = memo(({
                 "bg-surface-container/80 backdrop-blur-sm shadow-sm",
                 "active:scale-90 touch-manipulation",
                 station.isFavorite 
-                  ? "text-yellow-500 bg-yellow-500/10" 
+                  ? "text-yellow-500" 
                   : "text-on-surface-variant hover:text-yellow-500"
               )}
               aria-label={station.isFavorite ? "Remove from favorites" : "Add to favorites"}
