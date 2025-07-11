@@ -56,18 +56,18 @@ export const StationCard: React.FC<StationCardProps> = memo(({
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden group material-transition cursor-pointer h-full ios-touch-target",
-        "transform hover:scale-105 active:scale-95 border-0 backdrop-blur-sm elevation-1 hover:elevation-3",
-        "hover:shadow-xl hover:-translate-y-1 aspect-square",
+        "relative overflow-hidden group smooth-animation cursor-pointer h-full ios-touch-target rounded-3xl",
+        "transform hover:scale-[1.03] active:scale-95 border-0 backdrop-blur-sm elevation-1 hover:elevation-4",
+        "hover:shadow-2xl hover:-translate-y-2 aspect-square modern-card modern-card-hover",
         isSelected 
-          ? "bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg ring-2 ring-primary/30" 
+          ? "bg-gradient-to-br from-primary/25 to-primary/15 shadow-xl ring-2 ring-primary/40 scale-[1.02]" 
           : inPlaylist && actionIcon === "add"
-          ? "bg-gradient-to-br from-green-500/10 to-green-500/5 shadow-md ring-1 ring-green-500/20"
+          ? "bg-gradient-to-br from-green-500/15 to-green-500/8 shadow-lg ring-1 ring-green-500/30"
           : isProcessing
-          ? "bg-gradient-to-br from-blue-500/10 to-blue-500/5 shadow-md ring-1 ring-blue-500/20"
-          : "bg-gradient-to-br from-surface-container/80 to-surface-container/60 hover:from-accent/40 hover:to-accent/20",
+          ? "bg-gradient-to-br from-blue-500/15 to-blue-500/8 shadow-lg ring-1 ring-blue-500/30 animate-pulse"
+          : "bg-gradient-to-br from-surface-container/90 to-surface-container/70 gradient-hover",
         // Disable hover effects if already in playlist or being processed
-        isDisabled && "hover:scale-100 cursor-default"
+        isDisabled && "hover:scale-100 cursor-default opacity-70"
       )}
       onClick={handlePlayClick}
       role="button"
@@ -89,12 +89,12 @@ export const StationCard: React.FC<StationCardProps> = memo(({
               onToggleFavorite();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
-              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
-              "active:scale-90 touch-manipulation",
+              "w-8 h-8 rounded-full flex items-center justify-center smooth-animation elevation-1 hover:elevation-2",
+              "bg-surface-container/90 backdrop-blur-sm shadow-md",
+              "active:scale-90 touch-manipulation hover:scale-110",
               station.isFavorite 
-                ? "text-yellow-500" 
-                : "text-on-surface-variant hover:text-yellow-500"
+                ? "text-yellow-500 bg-yellow-500/20 shadow-yellow-500/20" 
+                : "text-on-surface-variant hover:text-yellow-500 hover:bg-yellow-500/10"
             )}
             aria-label={station.isFavorite ? "Remove from favorites" : "Add to favorites"}
           >
@@ -112,10 +112,10 @@ export const StationCard: React.FC<StationCardProps> = memo(({
               onDelete();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
-              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
-              "active:scale-90 touch-manipulation",
-              "text-destructive hover:bg-destructive/10"
+              "w-8 h-8 rounded-full flex items-center justify-center smooth-animation elevation-1 hover:elevation-2",
+              "bg-surface-container/90 backdrop-blur-sm shadow-md",
+              "active:scale-90 touch-manipulation hover:scale-110",
+              "text-destructive hover:bg-destructive/20 hover:text-destructive"
             )}
             aria-label={context === "playlist" ? "Remove from playlist" : "Delete station"}
           >
@@ -133,10 +133,10 @@ export const StationCard: React.FC<StationCardProps> = memo(({
               onEdit();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
-              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
-              "active:scale-90 touch-manipulation",
-              "text-blue-500 hover:bg-blue-500/10"
+              "w-8 h-8 rounded-full flex items-center justify-center smooth-animation elevation-1 hover:elevation-2",
+              "bg-surface-container/90 backdrop-blur-sm shadow-md",
+              "active:scale-90 touch-manipulation hover:scale-110",
+              "text-blue-500 hover:bg-blue-500/20 hover:text-blue-600"
             )}
             aria-label="Edit station"
           >
@@ -145,21 +145,23 @@ export const StationCard: React.FC<StationCardProps> = memo(({
         </div>
       )}
 
-      <div className="p-3 flex flex-col items-center justify-center h-full min-h-[140px]">
+      <div className="p-4 flex flex-col items-center justify-center h-full min-h-[160px] smooth-animation">
         {/* Centered Play Button */}
-        <div className="flex-1 flex items-center justify-center mb-1">
-          <StationCardButton
-            station={station}
-            isPlaying={isPlaying}
-            isSelected={isSelected}
-            actionIcon={actionIcon}
-            context={context}
-            inPlaylist={inPlaylist}
-            isAddingToPlaylist={isProcessing}
-            onClick={handlePlayClick}
-            isDisabled={isDisabled}
-            isProcessing={isProcessing}
-          />
+        <div className="flex-1 flex items-center justify-center mb-2">
+          <div className="bounce-in">
+            <StationCardButton
+              station={station}
+              isPlaying={isPlaying}
+              isSelected={isSelected}
+              actionIcon={actionIcon}
+              context={context}
+              inPlaylist={inPlaylist}
+              isAddingToPlaylist={isProcessing}
+              onClick={handlePlayClick}
+              isDisabled={isDisabled}
+              isProcessing={isProcessing}
+            />
+          </div>
         </div>
         
         {/* Station Info - Bottom */}
