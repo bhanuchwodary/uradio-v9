@@ -124,9 +124,12 @@ export const StationCard: React.FC<StationCardProps> = memo(({
         </div>
       )}
 
-      {/* Edit Button - Top Right (when no delete) */}
-      {onEdit && !onDelete && !station.isFeatured && (
-        <div className="absolute top-2 right-2 z-10">
+      {/* Edit Button - Top Right, positioned differently when delete exists */}
+      {onEdit && !station.isFeatured && (
+        <div className={cn(
+          "absolute z-10",
+          onDelete ? "top-12 right-2" : "top-2 right-2"
+        )}>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -145,7 +148,7 @@ export const StationCard: React.FC<StationCardProps> = memo(({
         </div>
       )}
 
-      <div className="p-4 flex flex-col items-center justify-center h-full min-h-[160px] smooth-animation">
+      <div className="p-3 flex flex-col items-center justify-center h-full min-h-[160px] smooth-animation">
         {/* Centered Play Button */}
         <div className="flex-1 flex items-center justify-center mb-2">
           <div className="bounce-in">
@@ -164,8 +167,8 @@ export const StationCard: React.FC<StationCardProps> = memo(({
           </div>
         </div>
         
-        {/* Station Info - Bottom */}
-        <div className="w-full mt-auto">
+        {/* Station Info - Bottom with proper spacing */}
+        <div className="w-full mt-auto px-2 space-y-1">
           <StationCardInfo
             station={station}
             isSelected={isSelected}
