@@ -145,20 +145,9 @@ export const StationCard: React.FC<StationCardProps> = memo(({
         </div>
       )}
 
-      <div className="p-3 flex flex-col items-center h-full min-h-[140px] relative">
-        {/* Station Info - Top */}
-        <div className="w-full flex-shrink-0 mb-2">
-          <StationCardInfo
-            station={station}
-            isSelected={isSelected}
-            inPlaylist={inPlaylist}
-            isProcessing={isProcessing}
-            actionIcon={actionIcon}
-          />
-        </div>
-        
-        {/* Centered Play Button - Near Station Name */}
-        <div className="flex-1 flex items-center justify-center">
+      <div className="p-3 flex flex-col items-center justify-center h-full min-h-[140px]">
+        {/* Centered Play Button */}
+        <div className="flex-1 flex items-center justify-center mb-1">
           <StationCardButton
             station={station}
             isPlaying={isPlaying}
@@ -170,6 +159,17 @@ export const StationCard: React.FC<StationCardProps> = memo(({
             onClick={handlePlayClick}
             isDisabled={isDisabled}
             isProcessing={isProcessing}
+          />
+        </div>
+        
+        {/* Station Info - Bottom */}
+        <div className="w-full mt-auto">
+          <StationCardInfo
+            station={station}
+            isSelected={isSelected}
+            inPlaylist={inPlaylist}
+            isProcessing={isProcessing}
+            actionIcon={actionIcon}
           />
         </div>
       </div>
