@@ -431,11 +431,15 @@
 
   /* Improved gradient overlays */
   .gradient-overlay {
-    @apply bg-gradient-to-br from-primary/5 via-secondary/3 to-tertiary/5;
+    background: linear-gradient(135deg, rgb(var(--primary) / 0.05), rgb(var(--secondary) / 0.03), rgb(var(--tertiary) / 0.05));
   }
 
   .gradient-hover {
-    @apply hover:from-primary/10 hover:via-secondary/7 hover:to-tertiary/10;
+    transition: background 0.3s ease;
+  }
+  
+  .gradient-hover:hover {
+    background: linear-gradient(135deg, rgb(var(--primary) / 0.1), rgb(var(--secondary) / 0.07), rgb(var(--tertiary) / 0.1));
   }
 
   /* Enhanced metallic theme contouring */
