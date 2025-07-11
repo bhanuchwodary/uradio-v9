@@ -22,10 +22,10 @@ const NavItem: React.FC<{ item: typeof navItems[0]; isActive: boolean }> = ({ it
       >
         <div
           className={cn(
-            "flex items-center justify-center rounded-full smooth-animation h-10 w-10 sm:h-8 sm:w-16 elevation-0 hover:elevation-1",
+            "flex items-center justify-center rounded-full transition-all duration-300 ease-in-out h-10 w-10 sm:h-8 sm:w-16",
             isActive
-              ? "bg-secondary-container text-on-secondary-container shadow-md scale-105"
-              : "text-on-surface-variant group-hover:bg-on-surface/10 group-hover:scale-105"
+              ? "bg-secondary-container text-on-secondary-container"
+              : "text-on-surface-variant group-hover:bg-on-surface/10"
           )}
         >
           <item.icon className="h-6 w-6" />
@@ -47,7 +47,7 @@ export const BottomNav: React.FC = () => {
   const path = location.pathname;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 p-2 sm:p-3 glass-surface border-t border-outline-variant/30 elevation-4 z-10 bottom-nav-ios ios-safe-left ios-safe-right smooth-animation">
+    <nav className="fixed bottom-0 left-0 right-0 p-2 sm:p-3 bg-surface-container/98 backdrop-blur-xl border-t border-outline-variant/20 elevation-3 z-10 bottom-nav-ios ios-safe-left ios-safe-right">
       <div className="container mx-auto px-0">
         <div className="flex justify-around items-start gap-1 px-1">
           {navItems.map((item) => (

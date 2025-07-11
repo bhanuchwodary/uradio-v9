@@ -76,19 +76,19 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 glass-surface border-b border-outline-variant/30 z-20 elevation-2 ios-safe-left ios-safe-right smooth-animation" style={{ 
+    <header className="fixed top-0 left-0 right-0 bg-surface-container/95 backdrop-blur-lg border-b border-outline-variant/20 z-20 elevation-1 ios-safe-left ios-safe-right" style={{ 
       paddingTop: 'max(env(safe-area-inset-top), 0px)',
       height: 'calc(5rem + max(env(safe-area-inset-top), 0px))'
     }}>
       <div className="container mx-auto flex items-center h-full px-4 gap-4 w-full" style={{ minHeight: '5rem' }}>
         {/* Logo and Tagline */}
-        <div className="flex-shrink-0 flex flex-col items-center group">
+        <div className="flex-shrink-0 flex flex-col items-center">
           <img
             src={getLogoSrc()}
             alt="uRadio"
-            className={`h-10 w-auto object-contain smooth-animation ${logoLoaded ? 'opacity-100' : 'opacity-0'} group-hover:scale-105`}
+            className={`h-10 w-auto object-contain transition-opacity duration-100 ${logoLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
-          <p className="font-handwritten text-xs text-on-surface-variant mt-0.5 tracking-wide smooth-animation group-hover:text-primary">
+          <p className="font-handwritten text-xs text-on-surface-variant mt-0.5 tracking-wide">
             it's ur radio
           </p>
         </div>

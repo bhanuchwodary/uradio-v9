@@ -103,36 +103,36 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Original full player layout for non-compact mode
   return (
-    <Card className="modern-card p-6 bg-gradient-to-br from-surface-container/80 to-surface-container/60 backdrop-blur-lg border border-outline-variant/40 shadow-xl rounded-3xl elevation-3 hover:elevation-5 smooth-animation">
-      <div className="flex flex-col space-y-6">
+    <Card className="p-4 bg-gradient-to-br from-surface-container/60 to-surface-container/80 backdrop-blur-md border border-outline-variant/30 shadow-lg rounded-2xl">
+      <div className="flex flex-col space-y-4">
         {/* Station info */}
-        <div className="text-center px-2 animate-fade-in">
-          <h2 className="text-2xl font-bold truncate leading-tight text-on-surface smooth-animation">
+        <div className="text-center px-2">
+          <h2 className="text-xl font-bold truncate leading-tight text-on-surface">
             {currentTrack?.name || "Select a station"}
           </h2>
-          <p className="text-sm text-on-surface-variant truncate mt-2">
+          <p className="text-xs text-on-surface-variant truncate mt-1">
             {currentTrack?.url ? getHostnameFromUrl(currentTrack.url) : "No station selected"}
           </p>
           {currentTrack?.language && (
-            <div className="flex items-center justify-center text-sm mt-3">
-              <span className="bg-primary/20 text-primary px-3 py-1.5 rounded-full font-medium shadow-sm">{currentTrack.language}</span>
+            <div className="flex items-center justify-center text-xs mt-2">
+              <span className="bg-primary/15 text-primary px-2 py-1 rounded-full">{currentTrack.language}</span>
             </div>
           )}
           {loading && (
-            <p className="text-sm text-primary animate-pulse mt-3 font-medium">Loading stream...</p>
+            <p className="text-xs text-primary animate-pulse mt-2">Loading stream...</p>
           )}
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-center space-x-6 py-4">
+        <div className="flex items-center justify-center space-x-4 py-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={onPrevious}
             disabled={!currentTrack}
-            className="h-14 w-14 rounded-full bg-surface-container/80 hover:bg-surface-container-high border border-outline-variant/40 ios-touch-target smooth-animation hover:scale-110 active:scale-95 elevation-1 hover:elevation-2"
+            className="h-12 w-12 rounded-full bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 ios-touch-target active:scale-95 transition-transform"
           >
-            <SkipBack className="h-7 w-7" />
+            <SkipBack className="h-6 w-6" />
           </Button>
           
           <Button
@@ -141,14 +141,14 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             onClick={onPlayPause}
             disabled={!currentTrack}
             className={cn(
-              "h-20 w-20 rounded-full ios-touch-target smooth-animation hover:scale-110 active:scale-95 shadow-xl elevation-3 hover:elevation-5",
-              isPlaying ? "bg-primary/90 ring-4 ring-primary/20" : "bg-primary shadow-primary/30"
+              "h-16 w-16 rounded-full ios-touch-target active:scale-95 transition-transform shadow-lg",
+              isPlaying ? "bg-primary/90" : "bg-primary"
             )}
           >
             {isPlaying ? (
-              <Pause className="h-10 w-10" />
+              <Pause className="h-8 w-8" />
             ) : (
-              <Play className="h-10 w-10 ml-1" />
+              <Play className="h-8 w-8 ml-1" />
             )}
           </Button>
           
@@ -157,9 +157,9 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             size="icon"
             onClick={onNext}
             disabled={!currentTrack}
-            className="h-14 w-14 rounded-full bg-surface-container/80 hover:bg-surface-container-high border border-outline-variant/40 ios-touch-target smooth-animation hover:scale-110 active:scale-95 elevation-1 hover:elevation-2"
+            className="h-12 w-12 rounded-full bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 ios-touch-target active:scale-95 transition-transform"
           >
-            <SkipForward className="h-7 w-7" />
+            <SkipForward className="h-6 w-6" />
           </Button>
         </div>
 

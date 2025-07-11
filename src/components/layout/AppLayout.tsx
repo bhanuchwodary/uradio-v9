@@ -20,20 +20,18 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   }, [volume]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-surface to-surface-container dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce gradient-overlay">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-surface to-surface-container dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce">
       <AppHeader randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />
       <div
         className={cn(
           "flex-grow pb-32 md:pb-28 overflow-x-hidden w-full ios-smooth-scroll ios-safe-left ios-safe-right",
-          "responsive-padding smooth-animation"
+          "responsive-padding"
         )}
         style={{ 
           paddingTop: 'calc(5rem + max(env(safe-area-inset-top), 0px))'
         }}
       >
-        <div className="w-full animate-fade-in">
-          {children}
-        </div>
+        {children}
       </div>
       <BottomNav />
     </div>
