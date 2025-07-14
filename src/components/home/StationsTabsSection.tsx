@@ -43,19 +43,19 @@ const StationsTabsSection: React.FC<StationsTabsSectionProps> = ({
   });
 
   return (
-    <Card className="bg-surface-container border border-outline-variant/30 rounded-lg elevation-1">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg text-foreground">My Stations</CardTitle>
+    <Card className="bg-gradient-to-br from-surface-container/95 to-surface-container/80 border border-outline-variant/20 rounded-2xl elevation-1">
+      <CardHeader className="pb-3 px-4 sm:px-6">
+        <CardTitle className="text-2xl font-bold text-foreground">All Stations</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4 sm:px-6 pb-6">
         <Tabs defaultValue="popular" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="popular">Popular</TabsTrigger>
-            <TabsTrigger value="mystations">My Stations</TabsTrigger>
-            <TabsTrigger value="featured">Featured</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 bg-surface-container-high/50 p-1 rounded-xl">
+            <TabsTrigger value="popular" className="rounded-lg font-medium">Popular</TabsTrigger>
+            <TabsTrigger value="mystations" className="rounded-lg font-medium">My Stations</TabsTrigger>
+            <TabsTrigger value="featured" className="rounded-lg font-medium">Featured</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="popular" className="mt-4">
+          <TabsContent value="popular" className="mt-6">
             <StationGrid
               stations={popularStations}
               currentIndex={currentIndex}
@@ -67,7 +67,7 @@ const StationsTabsSection: React.FC<StationsTabsSectionProps> = ({
             />
           </TabsContent>
           
-          <TabsContent value="mystations" className="mt-4">
+          <TabsContent value="mystations" className="mt-6">
             <StationGrid
               stations={userStations}
               currentIndex={currentIndex}
@@ -80,10 +80,10 @@ const StationsTabsSection: React.FC<StationsTabsSectionProps> = ({
             />
           </TabsContent>
           
-          <TabsContent value="featured" className="mt-4 space-y-6">
+          <TabsContent value="featured" className="mt-6 space-y-8">
             {Object.entries(featuredByLanguage).map(([language, stations]) => (
-              <div key={language} className="mb-4">
-                <h3 className="font-medium text-lg mb-2 text-foreground">{language}</h3>
+              <div key={language} className="mb-6">
+                <h3 className="font-semibold text-xl mb-4 text-foreground border-b border-outline-variant/30 pb-2">{language}</h3>
                 <StationGrid
                   stations={stations}
                   currentIndex={currentIndex}
