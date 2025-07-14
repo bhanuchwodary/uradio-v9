@@ -175,7 +175,7 @@ const Index: React.FC = () => {
   return (
     <ErrorBoundary>
       <AppLayout>
-        <div className="container mx-auto max-w-5xl space-y-6">
+        <div className="container mx-auto max-w-6xl space-y-8 px-4 sm:px-6">{/* Improved spacing and max-width */}
           {/* Player Card */}
           <ErrorBoundary fallback={
             <div className="text-center p-4 text-muted-foreground">
