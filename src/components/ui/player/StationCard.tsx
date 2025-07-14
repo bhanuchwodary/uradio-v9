@@ -82,14 +82,14 @@ export const StationCard: React.FC<StationCardProps> = memo(({
     >
       {/* Favorite Button - Top Left */}
       {onToggleFavorite && (
-        <div className="absolute top-2 left-2 z-10">
+        <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onToggleFavorite();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
+              "w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-200",
               "bg-surface-container/80 backdrop-blur-sm shadow-sm",
               "active:scale-90 touch-manipulation",
               station.isFavorite 
@@ -98,54 +98,54 @@ export const StationCard: React.FC<StationCardProps> = memo(({
             )}
             aria-label={station.isFavorite ? "Remove from favorites" : "Add to favorites"}
           >
-            <Star className={cn("h-3.5 w-3.5", station.isFavorite && "fill-current")} />
+            <Star className={cn("h-3 w-3 sm:h-3.5 sm:w-3.5", station.isFavorite && "fill-current")} />
           </button>
         </div>
       )}
 
       {/* Delete Button - Top Right */}
       {onDelete && (
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onDelete();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
+              "w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-200",
               "bg-surface-container/80 backdrop-blur-sm shadow-sm",
               "active:scale-90 touch-manipulation",
               "text-destructive hover:bg-destructive/10"
             )}
             aria-label={context === "playlist" ? "Remove from playlist" : "Delete station"}
           >
-            <Trash2 className="h-3.5 w-3.5" />
+            <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
           </button>
         </div>
       )}
 
       {/* Edit Button - Top Right (when no delete) */}
       {onEdit && !onDelete && !station.isFeatured && (
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onEdit();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
+              "w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-200",
               "bg-surface-container/80 backdrop-blur-sm shadow-sm",
               "active:scale-90 touch-manipulation",
               "text-blue-500 hover:bg-blue-500/10"
             )}
             aria-label="Edit station"
           >
-            <Edit className="h-3.5 w-3.5" />
+            <Edit className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
           </button>
         </div>
       )}
 
-      <div className="p-3 flex flex-col items-center justify-center h-full min-h-[140px]">
+      <div className="p-2 sm:p-3 flex flex-col items-center justify-center h-full min-h-[120px] sm:min-h-[140px]">
         {/* Centered Play Button */}
         <div className="flex-1 flex items-center justify-center mb-1">
           <StationCardButton
