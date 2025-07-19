@@ -10,7 +10,6 @@ import { useAudioPlayerState } from './hooks/useAudioPlayerState';
 import { useAudioPlayerActions } from './hooks/useAudioPlayerActions';
 import { useAudioPlayerEvents } from './hooks/useAudioPlayerEvents';
 import { useBluetoothAutoResume } from '@/hooks/useBluetoothAutoResume';
-import { usePhoneCallHandling } from '@/hooks/usePhoneCallHandling';
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(undefined);
 
@@ -113,9 +112,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     onNext: nextTrack,
     onPrevious: previousTrack,
   });
-
-  // Enhanced phone call and audio interruption handling
-  usePhoneCallHandling(isPlaying, setIsPlaying);
 
   // Bluetooth auto-resume functionality
   useBluetoothAutoResume({
