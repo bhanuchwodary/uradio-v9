@@ -57,15 +57,15 @@ export const StationCard: React.FC<StationCardProps> = memo(({
     <Card 
       className={cn(
         "relative overflow-hidden group material-transition cursor-pointer h-full ios-touch-target",
-        "transform hover:scale-[1.02] active:scale-95 border border-outline-variant/10 backdrop-blur-sm elevation-1 hover:elevation-3",
-        "hover:shadow-xl hover:-translate-y-0.5 aspect-square rounded-2xl",
-        isSelected
-          ? "bg-gradient-to-br from-primary/25 to-primary/15 shadow-lg ring-2 ring-primary/40 border-primary/20" 
+        "transform hover:scale-105 active:scale-95 border-0 backdrop-blur-sm elevation-1 hover:elevation-3",
+        "hover:shadow-xl hover:-translate-y-1 aspect-square",
+        isSelected 
+          ? "bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg ring-2 ring-primary/30" 
           : inPlaylist && actionIcon === "add"
-          ? "bg-gradient-to-br from-green-500/15 to-green-500/8 shadow-md ring-1 ring-green-500/30 border-green-500/20"
+          ? "bg-gradient-to-br from-green-500/10 to-green-500/5 shadow-md ring-1 ring-green-500/20"
           : isProcessing
-          ? "bg-gradient-to-br from-blue-500/15 to-blue-500/8 shadow-md ring-1 ring-blue-500/30 border-blue-500/20"
-          : "bg-gradient-to-br from-surface-container/90 to-surface-container/70 hover:from-accent/30 hover:to-accent/15 border-surface-container-high/50",
+          ? "bg-gradient-to-br from-blue-500/10 to-blue-500/5 shadow-md ring-1 ring-blue-500/20"
+          : "bg-gradient-to-br from-surface-container/80 to-surface-container/60 hover:from-accent/40 hover:to-accent/20",
         // Disable hover effects if already in playlist or being processed
         isDisabled && "hover:scale-100 cursor-default"
       )}
@@ -145,9 +145,9 @@ export const StationCard: React.FC<StationCardProps> = memo(({
         </div>
       )}
 
-      <div className="p-4 flex flex-col items-center justify-center h-full min-h-[160px]">
+      <div className="p-3 flex flex-col items-center justify-center h-full min-h-[140px]">
         {/* Centered Play Button */}
-        <div className="flex-1 flex items-center justify-center mb-2">
+        <div className="flex-1 flex items-center justify-center mb-1">
           <StationCardButton
             station={station}
             isPlaying={isPlaying}

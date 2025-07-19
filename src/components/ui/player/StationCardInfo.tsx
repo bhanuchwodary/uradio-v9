@@ -17,8 +17,8 @@ export const StationCardInfo: React.FC<StationCardInfoProps> = ({
     <>
       {/* Station Name with better typography */}
       <h3 className={cn(
-        "font-semibold text-sm line-clamp-2 w-full text-center leading-tight px-1",
-        "min-h-[2rem] flex items-center justify-center transition-colors duration-200 mb-1.5",
+        "font-medium text-xs line-clamp-2 w-full text-center leading-tight px-0.5",
+        "min-h-[1.5rem] flex items-center justify-center transition-colors duration-200",
         isSelected ? "text-primary font-semibold" 
         : inPlaylist && actionIcon === "add" ? "text-green-700 font-medium"
         : isProcessing ? "text-blue-700 font-medium"
@@ -30,8 +30,8 @@ export const StationCardInfo: React.FC<StationCardInfoProps> = ({
       {/* Language Badge with enhanced styling and playlist indicator */}
       <div className="flex items-center justify-center">
         <span className={cn(
-          "bg-gradient-to-r px-2 py-1 rounded-lg text-[10px] font-semibold border shadow-sm",
-          "transition-all duration-200 transform group-hover:scale-105 tracking-wide uppercase",
+          "bg-gradient-to-r px-1.5 py-0.5 rounded-full text-[9px] font-medium border shadow-sm",
+          "transition-all duration-200 transform group-hover:scale-105",
           isSelected 
             ? "from-primary/20 to-primary/10 text-primary border-primary/30" 
             : inPlaylist && actionIcon === "add"
