@@ -111,53 +111,66 @@ export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing:
     };
   }, [handleAppStateChange, handleActualInterruption, handleInterruptionEnd]);
 
-  // Enhanced Media Session integration for proper media controls
+  // Enhanced audio interruption detection for better phone call and focus handling
   useEffect(() => {
-    const mediaSession = navigator.mediaSession;
-
-    const handlePause = () => {
-      logger.debug("MediaSession: pause event (user explicitly paused)");
-      if (globalAudioRef.element && !globalAudioRef.element.paused) {
-        globalAudioRef.element.pause();
-        setIsPlaying(false);
-        // This is explicit user action, not an interruption
-        globalAudioRef.shouldPlayAfterInterruption = false;
-      }
-      updateGlobalPlaybackState(false, true, true); // Mark as explicitly paused
-    };
-
-    const handlePlay = () => {
-      logger.debug("MediaSession: play event (user explicitly played)");
-      if (globalAudioRef.element && globalAudioRef.element.paused) {
-        globalAudioRef.element.play().then(() => {
-          setIsPlaying(true);
-          setInterruptionState('none', false);
-          resetAudioStateForUserAction();
-        }).catch(error => {
-          logger.error("Error playing via MediaSession:", error);
-          setIsPlaying(false);
+    // Listen for audio context state changes (better interruption detection)
+    const handleAudioContextChange = () => {
+      if ('webkitAudioContext' in window) {
+        const audioContext = new (window as any).webkitAudioContext();
+        audioContext.addEventListener('statechange', () => {
+          if (audioContext.state === 'interrupted') {
+            logger.debug("Audio context interrupted - likely phone call or system audio");
+            handleActualInterruption();
+          } else if (audioContext.state === 'running' && wasPlayingBeforeInterruption.current) {
+            logger.debug("Audio context resumed - interruption ended");
+            handleInterruptionEnd();
+          }
         });
       }
     };
 
-    if (mediaSession) {
-      try {
-        mediaSession.setActionHandler("pause", handlePause);
-        mediaSession.setActionHandler("play", handlePlay);
-      } catch (error) {
-        logger.warn("Media Session action handler not supported or failed:", error);
-      }
-    }
-
-    return () => {
-      if (mediaSession) {
-        try {
-          mediaSession.setActionHandler("pause", null);
-          mediaSession.setActionHandler("play", null);
-        } catch (error) {
-          logger.warn("Media Session action handler cleanup failed:", error);
+    // Listen for visibility changes that might indicate audio focus loss
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // App went to background - don't pause, but be ready to detect interruptions
+        logger.debug("App backgrounded - monitoring for audio interruptions");
+      } else {
+        // App came to foreground
+        logger.debug("App foregrounded - checking if resume needed");
+        if (globalAudioRef.shouldPlayAfterInterruption && wasPlayingBeforeInterruption.current) {
+          setTimeout(() => handleInterruptionEnd(), 500); // Small delay for stability
         }
       }
     };
-  }, [setIsPlaying]);
+
+    // Enhanced audio session interruption listeners
+    const handleBeginInterruption = () => {
+      logger.debug("Audio session interruption began");
+      handleActualInterruption();
+    };
+
+    const handleEndInterruption = () => {
+      logger.debug("Audio session interruption ended");
+      // Add delay to allow system to stabilize
+      setTimeout(() => handleInterruptionEnd(), 1000);
+    };
+
+    // Set up listeners
+    handleAudioContextChange();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('webkitbegininputsession', handleBeginInterruption);
+    document.addEventListener('webkitendinputsession', handleEndInterruption);
+
+    // Listen for native audio interruptions on mobile
+    window.addEventListener('audiointerruptionbegin', handleBeginInterruption);
+    window.addEventListener('audiointerruptionend', handleEndInterruption);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('webkitbegininputsession', handleBeginInterruption);
+      document.removeEventListener('webkitendinputsession', handleEndInterruption);
+      window.removeEventListener('audiointerruptionbegin', handleBeginInterruption);
+      window.removeEventListener('audiointerruptionend', handleEndInterruption);
+    };
+  }, [handleActualInterruption, handleInterruptionEnd]);
 };
