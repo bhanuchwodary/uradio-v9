@@ -1,11 +1,20 @@
 
 // src/hooks/usePhoneCallHandling.ts
 import { useEffect, useRef, useCallback } from "react";
-import { globalAudioRef, updateGlobalPlaybackState, resetAudioStateForUserAction } from "@/components/music-player/audioInstance";
+import { 
+  globalAudioRef, 
+  updateGlobalPlaybackState, 
+  resetAudioStateForUserAction, 
+  setInterruptionState,
+  attemptInterruptionResume 
+} from "@/components/music-player/audioInstance";
 import { logger } from "@/utils/logger";
 import { App } from '@capacitor/app'; // Import Capacitor App plugin
+import { useAudioInterruptionHandling } from "./useAudioInterruptionHandling";
 
 export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing: boolean) => void) => {
+  // Use the enhanced audio interruption handling
+  useAudioInterruptionHandling(isPlaying, setIsPlaying);
   const initialIsPlayingRef = useRef(isPlaying);
 
   // Store the initial playback state when the component mounts
@@ -17,33 +26,37 @@ export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing:
     logger.debug("App focus lost (background/call/other app audio)");
     if (globalAudioRef.element && !globalAudioRef.element.paused) {
       globalAudioRef.shouldPlayAfterInterruption = true;
+      setInterruptionState('app-state', true);
       globalAudioRef.element.pause();
       setIsPlaying(false);
       logger.info("Playback paused due to app focus loss.");
     } else {
       globalAudioRef.shouldPlayAfterInterruption = false;
+      setInterruptionState('none', false);
     }
     updateGlobalPlaybackState(false, false, false); // Clear states
   }, [setIsPlaying]);
 
-  const handleAppFocusGain = useCallback(() => {
+  const handleAppFocusGain = useCallback(async () => {
     logger.debug("App focus gained (foreground)");
     if (globalAudioRef.element && globalAudioRef.shouldPlayAfterInterruption) {
-      // Attempt to play only if it was playing before interruption and not explicitly paused by user
-      // Using a timeout to give the OS a moment to release audio focus if it was held.
-      setTimeout(() => {
+      // Use enhanced resume logic with adaptive delays and retry mechanism
+      const playFunction = async () => {
         if (globalAudioRef.element) {
-          globalAudioRef.element.play().then(() => {
-            setIsPlaying(true);
-            logger.info("Playback resumed after app focus gain.");
-            resetAudioStateForUserAction(); // Reset flags after successful resume
-          }).catch(error => {
-            logger.error("Error resuming playback after focus gain:", error);
-            setIsPlaying(false); // Ensure UI reflects actual state if play fails
-            resetAudioStateForUserAction(); // Reset flags even on failure
-          });
+          await globalAudioRef.element.play();
+          setIsPlaying(true);
+          logger.info("Playback resumed after app focus gain.");
+          resetAudioStateForUserAction();
         }
-      }, 500); // Small delay to allow system audio focus to release
+      };
+
+      const resumeSuccess = await attemptInterruptionResume(playFunction);
+      
+      if (!resumeSuccess) {
+        logger.warn("Failed to resume playback after app focus gain");
+        setIsPlaying(false);
+        resetAudioStateForUserAction();
+      }
     }
   }, [setIsPlaying]);
 
@@ -83,6 +96,7 @@ export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing:
       const handlePause = () => {
           logger.debug("MediaSession: pause event");
           if (globalAudioRef.element && !globalAudioRef.element.paused) {
+              setInterruptionState('media-session', true);
               globalAudioRef.element.pause();
               setIsPlaying(false);
               globalAudioRef.shouldPlayAfterInterruption = true; // Still consider it interrupted by MediaSession
@@ -95,6 +109,7 @@ export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing:
           if (globalAudioRef.element && globalAudioRef.element.paused) {
               globalAudioRef.element.play().then(() => {
                   setIsPlaying(true);
+                  setInterruptionState('none', false);
                   resetAudioStateForUserAction();
               }).catch(error => {
                   logger.error("Error playing via MediaSession:", error);
