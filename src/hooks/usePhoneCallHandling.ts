@@ -9,66 +9,73 @@ import {
   attemptInterruptionResume 
 } from "@/components/music-player/audioInstance";
 import { logger } from "@/utils/logger";
-import { App } from '@capacitor/app'; // Import Capacitor App plugin
-import { useAudioInterruptionHandling } from "./useAudioInterruptionHandling";
+import { App } from '@capacitor/app';
 
 export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing: boolean) => void) => {
-  // Use the enhanced audio interruption handling
-  useAudioInterruptionHandling(isPlaying, setIsPlaying);
   const initialIsPlayingRef = useRef(isPlaying);
+  const wasPlayingBeforeInterruption = useRef(false);
 
   // Store the initial playback state when the component mounts
   useEffect(() => {
     initialIsPlayingRef.current = isPlaying;
   }, [isPlaying]);
 
-  const handleAppFocusLoss = useCallback(() => {
-    logger.debug("App focus lost (background/call/other app audio)");
+  // Handle actual phone calls and audio interruptions (not just app backgrounding)
+  const handleActualInterruption = useCallback(() => {
+    logger.debug("Actual audio interruption detected (phone call, alarm, etc.)");
     if (globalAudioRef.element && !globalAudioRef.element.paused) {
+      wasPlayingBeforeInterruption.current = true;
       globalAudioRef.shouldPlayAfterInterruption = true;
-      setInterruptionState('app-state', true);
+      setInterruptionState('phone-call', true);
       globalAudioRef.element.pause();
       setIsPlaying(false);
-      logger.info("Playback paused due to app focus loss.");
-    } else {
-      globalAudioRef.shouldPlayAfterInterruption = false;
-      setInterruptionState('none', false);
+      logger.info("Playback paused due to actual audio interruption.");
     }
-    updateGlobalPlaybackState(false, false, false); // Clear states
+    updateGlobalPlaybackState(false, false, false);
   }, [setIsPlaying]);
 
-  const handleAppFocusGain = useCallback(async () => {
-    logger.debug("App focus gained (foreground)");
-    if (globalAudioRef.element && globalAudioRef.shouldPlayAfterInterruption) {
-      // Use enhanced resume logic with adaptive delays and retry mechanism
+  const handleInterruptionEnd = useCallback(async () => {
+    logger.debug("Audio interruption ended, attempting resume");
+    if (globalAudioRef.element && wasPlayingBeforeInterruption.current && globalAudioRef.shouldPlayAfterInterruption) {
       const playFunction = async () => {
         if (globalAudioRef.element) {
           await globalAudioRef.element.play();
           setIsPlaying(true);
-          logger.info("Playback resumed after app focus gain.");
-          resetAudioStateForUserAction();
+          wasPlayingBeforeInterruption.current = false;
+          logger.info("Playback resumed after interruption ended.");
         }
       };
 
       const resumeSuccess = await attemptInterruptionResume(playFunction);
       
       if (!resumeSuccess) {
-        logger.warn("Failed to resume playback after app focus gain");
+        logger.warn("Failed to resume playback after interruption");
         setIsPlaying(false);
-        resetAudioStateForUserAction();
+        wasPlayingBeforeInterruption.current = false;
       }
     }
   }, [setIsPlaying]);
+
+  // Handle app state changes - but don't pause music for normal backgrounding
+  const handleAppStateChange = useCallback((isActive: boolean) => {
+    if (isActive) {
+      logger.debug("App became active");
+      // Only resume if there was an actual interruption, not just app backgrounding
+      if (globalAudioRef.shouldPlayAfterInterruption && wasPlayingBeforeInterruption.current) {
+        handleInterruptionEnd();
+      }
+    } else {
+      logger.debug("App went to background - music should continue playing");
+      // Don't pause music when app goes to background - this is normal behavior for music apps
+      // Only pause if there's an actual audio interruption detected by the system
+    }
+  }, [handleInterruptionEnd]);
 
   useEffect(() => {
     // Capacitor App State Change Listener
     const setupListener = async () => {
       const appStateChangeListener = await App.addListener('appStateChange', ({ isActive }) => {
-        if (isActive) {
-          handleAppFocusGain();
-        } else {
-          handleAppFocusLoss();
-        }
+        handleAppStateChange(isActive);
       });
 
       return () => {
@@ -81,61 +88,76 @@ export const usePhoneCallHandling = (isPlaying: boolean, setIsPlaying: (playing:
       cleanup = cleanupFn;
     });
 
+    // Listen for actual audio interruptions via Web Audio API
+    const handleAudioInterruption = () => {
+      handleActualInterruption();
+    };
+
+    const handleAudioInterruptionEnd = () => {
+      handleInterruptionEnd();
+    };
+
+    // Listen for native audio session interruptions
+    document.addEventListener('webkitbegininputsession', handleAudioInterruption);
+    document.addEventListener('webkitendinputsession', handleAudioInterruptionEnd);
+
     // Cleanup
     return () => {
       if (cleanup) {
         cleanup();
       }
+      document.removeEventListener('webkitbegininputsession', handleAudioInterruption);
+      document.removeEventListener('webkitendinputsession', handleAudioInterruptionEnd);
     };
-  }, [handleAppFocusGain, handleAppFocusLoss]);
+  }, [handleAppStateChange, handleActualInterruption, handleInterruptionEnd]);
 
-  // Keep existing Media Session listeners as they are important for controls and some focus changes
+  // Enhanced Media Session integration for proper media controls
   useEffect(() => {
-      const mediaSession = navigator.mediaSession;
+    const mediaSession = navigator.mediaSession;
 
-      const handlePause = () => {
-          logger.debug("MediaSession: pause event");
-          if (globalAudioRef.element && !globalAudioRef.element.paused) {
-              setInterruptionState('media-session', true);
-              globalAudioRef.element.pause();
-              setIsPlaying(false);
-              globalAudioRef.shouldPlayAfterInterruption = true; // Still consider it interrupted by MediaSession
-          }
-          updateGlobalPlaybackState(false, false, false);
-      };
-
-      const handlePlay = () => {
-          logger.debug("MediaSession: play event");
-          if (globalAudioRef.element && globalAudioRef.element.paused) {
-              globalAudioRef.element.play().then(() => {
-                  setIsPlaying(true);
-                  setInterruptionState('none', false);
-                  resetAudioStateForUserAction();
-              }).catch(error => {
-                  logger.error("Error playing via MediaSession:", error);
-                  setIsPlaying(false);
-              });
-          }
-      };
-
-      if (mediaSession) {
-          try {
-              mediaSession.setActionHandler("pause", handlePause);
-              mediaSession.setActionHandler("play", handlePlay);
-          } catch (error) {
-              logger.warn("Media Session action handler not supported or failed:", error);
-          }
+    const handlePause = () => {
+      logger.debug("MediaSession: pause event (user explicitly paused)");
+      if (globalAudioRef.element && !globalAudioRef.element.paused) {
+        globalAudioRef.element.pause();
+        setIsPlaying(false);
+        // This is explicit user action, not an interruption
+        globalAudioRef.shouldPlayAfterInterruption = false;
       }
+      updateGlobalPlaybackState(false, true, true); // Mark as explicitly paused
+    };
 
-      return () => {
-          if (mediaSession) {
-              try {
-                  mediaSession.setActionHandler("pause", null);
-                  mediaSession.setActionHandler("play", null);
-              } catch (error) {
-                  logger.warn("Media Session action handler cleanup failed:", error);
-              }
-          }
-      };
+    const handlePlay = () => {
+      logger.debug("MediaSession: play event (user explicitly played)");
+      if (globalAudioRef.element && globalAudioRef.element.paused) {
+        globalAudioRef.element.play().then(() => {
+          setIsPlaying(true);
+          setInterruptionState('none', false);
+          resetAudioStateForUserAction();
+        }).catch(error => {
+          logger.error("Error playing via MediaSession:", error);
+          setIsPlaying(false);
+        });
+      }
+    };
+
+    if (mediaSession) {
+      try {
+        mediaSession.setActionHandler("pause", handlePause);
+        mediaSession.setActionHandler("play", handlePlay);
+      } catch (error) {
+        logger.warn("Media Session action handler not supported or failed:", error);
+      }
+    }
+
+    return () => {
+      if (mediaSession) {
+        try {
+          mediaSession.setActionHandler("pause", null);
+          mediaSession.setActionHandler("play", null);
+        } catch (error) {
+          logger.warn("Media Session action handler cleanup failed:", error);
+        }
+      }
+    };
   }, [setIsPlaying]);
 };

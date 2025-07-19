@@ -114,7 +114,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     onPrevious: previousTrack,
   });
 
-  // Enhanced audio interruption handling
+  // Enhanced phone call and audio interruption handling
   usePhoneCallHandling(isPlaying, setIsPlaying);
 
   // Bluetooth auto-resume functionality
