@@ -24,7 +24,7 @@ export const useStationList = () => {
   const { addToPlaylist, isInPlaylist, isAddingToPlaylist } = usePlaylist();
 
   // Get current track from audio player context instead of track state
-  const { currentTrack } = useAudioPlayer();
+  const { currentTrack, playTrack } = useAudioPlayer();
 
   // Get user stations from library
   const userStations = getUserStations();
@@ -91,12 +91,9 @@ export const useStationList = () => {
     });
     
     if (alreadyInPlaylist) {
-      console.log("STATION ADD BLOCKED: Already in playlist");
-      toast({
-        title: "Station Already in Playlist",
-        description: `${station.name} is already in your playlist`,
-        variant: "destructive"
-      });
+      console.log("STATION ADD BLOCKED: Already in playlist - starting playback instead");
+      // If already in playlist, just play it
+      playTrack(station);
       return;
     }
 
@@ -104,10 +101,12 @@ export const useStationList = () => {
     const success = addToPlaylist(station);
 
     if (success) {
-      console.log("STATION ADD SUCCESS: Successfully added to playlist");
+      console.log("STATION ADD SUCCESS: Successfully added to playlist - starting playback");
+      // After successfully adding to playlist, also start playing the station
+      playTrack(station);
       toast({
-        title: "Station Added to Playlist",
-        description: `${station.name} has been added to your playlist`,
+        title: "Station Added & Playing",
+        description: `${station.name} has been added to your playlist and is now playing`,
       });
     } else {
       console.log("STATION ADD FAILED: Could not add to playlist");
@@ -117,7 +116,7 @@ export const useStationList = () => {
         variant: "destructive"
       });
     }
-  }, [addToPlaylist, isInPlaylist, isAddingToPlaylist, toast]);
+  }, [addToPlaylist, isInPlaylist, isAddingToPlaylist, toast, playTrack]);
 
   // Handle edit station (edits in main library)
   const handleEditStation = (station: Track) => {
