@@ -196,11 +196,6 @@ export const featuredStations = [
     language: "Telugu"
   },
   {
-    name: "Rainbow Vij",
-    url: "https://air.pc.cdn.bitgravity.com/air/live/pbaudio174/playlist.m3u8",
-    language: "Telugu"
-  },
-  {
     name: "Radio Beat",
     url: "https://listen.openstream.co/3372/audio",
     language: "Tamil"
@@ -259,5 +254,85 @@ export const featuredStations = [
     name: "Telugu Junction",
     url: "https://stream.zeno.fm/ige35g4gzhhtv",
     language: "Telugu"
+  },
+  {
+    name: "AIR Tirupati",
+    url: "https://air.pc.cdn.bitgravity.com/air/live/pbaudio144/playlist.m3u8",
+    language: "Telugu"
+  },
+  {
+    name: "Virijallu",
+    url: "https://15113.live.streamtheworld.com/SAM02AAC10_SC",
+    language: "Telugu"
+  },
+  {
+    name: "Godavari Radio",
+    url: "https://stream.zeno.fm/xlgwsdncsdptv",
+    language: "Telugu"
+  },
+  {
+    name: "Vibe Sounds",
+    url: "http://azuracast.vibesounds.in:8020/radio.mp3",
+    language: "Telugu"
+  },
+  {
+    name: "Eenadu FM",
+    url: "https://d1l07mcd18xic4.cloudfront.net/audio/5c9015cb-fc72-49df-96f5-e92f38a58626.m3u8",
+    language: "Telugu"
+  },
+  {
+    name: "Smooth Radio",
+    url: "https://media-ssl.musicradio.com/SmoothLondonMP3",
+    language: "English"
+  },
+  {
+    name: "Heart Radio",
+    url: "https://media-ssl.musicradio.com/HeartLondon",
+    language: "English"
+  },
+  {
+    name: "Capital FM",
+    url: "https://media-ssl.musicradio.com/Capital",
+    language: "English"
+  },
+  {
+    name: "VJMS Radio",
+    url: "https://streamasiacdn.atc-labs.com/vjmsradio.aac",
+    language: "Telugu"
+  },
+  {
+    name: "TNRI Radio",
+    url: "https://c6.radioboss.fm:18155/stream",
+    language: "Telugu"
+  },
+  {
+    name: "Swara Radio",
+    url: "http://s3.radio.co/s162c52c51/listen",
+    language: "Telugu"
+  },
+  {
+    name: "Hello Telugu",
+    url: "https://listen.radioking.com/radio/503281/stream/560701",
+    language: "Telugu"
+  },
+  {
+    name: "RB Radio",
+    url: "https://stream.ors.balajibpa.com/live",
+    language: "Telugu"
+  },
+  {
+    name: "Ilayaraja Radio",
+    url: "https://stream.zeno.fm/5bc5hwbsqg8uv",
+    language: "Telugu"
+  },
+  {
+    name: "Romantic Vibes",
+    url: "https://romantic.streeemer.com/listen/romantic/radio.mp3",
+    language: "English"
+  },
+  {
+    name: "Radio Zindagi",
+    url: "https://us9.maindigitalstream.com/ssl/RadioZindagi",
+    language: "Hindi"
   }
 ];

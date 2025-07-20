@@ -9,7 +9,6 @@ import { AudioPlayerContextType, AudioPlayerProviderProps } from './types/AudioP
 import { useAudioPlayerState } from './hooks/useAudioPlayerState';
 import { useAudioPlayerActions } from './hooks/useAudioPlayerActions';
 import { useAudioPlayerEvents } from './hooks/useAudioPlayerEvents';
-import { useBluetoothAutoResume } from '@/hooks/useBluetoothAutoResume';
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(undefined);
 
@@ -111,18 +110,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     onPause: pausePlayback,
     onNext: nextTrack,
     onPrevious: previousTrack,
-  });
-
-  // Bluetooth auto-resume functionality
-  useBluetoothAutoResume({
-    currentTrack,
-    isPlaying,
-    volume,
-    currentTime,
-    onResumePlayback: (track, resumeVolume) => {
-      playTrack(track);
-      setVolume(resumeVolume);
-    }
   });
 
   const contextValue: AudioPlayerContextType = {
