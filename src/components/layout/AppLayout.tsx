@@ -7,13 +7,13 @@ import { getVolumePreference, saveVolumePreference } from "@/utils/volumeStorage
 
 interface AppLayoutProps {
   children: React.ReactNode;
+  randomMode: boolean;
+  setRandomMode: (randomMode: boolean) => void;
+  volume: number;
+  setVolume: (volume: number) => void;
 }
 
-export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-  // Initialize volume from stored preference instead of hardcoded default
-  const [volume, setVolume] = useState(() => getVolumePreference());
-  const [randomMode, setRandomMode] = useState(false);
-
+export const AppLayout: React.FC<AppLayoutProps> = ({ children, randomMode, setRandomMode, volume, setVolume }) => {
   // Save volume preference whenever it changes
   useEffect(() => {
     saveVolumePreference(volume);

@@ -1,6 +1,6 @@
 
 import React from "react";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import EditStationDialog from "@/components/EditStationDialog";
 import StationSearch from "@/components/station-list/StationSearch";
 import UserStations from "@/components/station-list/UserStations";
@@ -30,8 +30,7 @@ const StationListPage: React.FC = () => {
   } = useStationList();
 
   return (
-    <AppLayout>
-      <div className="container mx-auto max-w-5xl space-y-6 pt-4">
+    <div className="container mx-auto max-w-5xl space-y-6 pt-4">
         <StationSearch searchTerm={searchTerm} onSearchTermChange={setSearchTerm} />
 
         <UserStations
@@ -73,8 +72,7 @@ const StationListPage: React.FC = () => {
           />
         )}
       </div>
-    </AppLayout>
-  );
-};
+    );
+  };
 
 export default StationListPage;

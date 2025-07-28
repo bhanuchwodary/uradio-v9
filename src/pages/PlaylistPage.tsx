@@ -1,6 +1,6 @@
 
 import React from "react";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import PlaylistContent from "@/components/playlist/PlaylistContent";
 import PlaylistDialogs from "@/components/playlist/PlaylistDialogs";
 import ClearAllDialog from "@/components/playlist/ClearAllDialog";
@@ -90,8 +90,7 @@ const PlaylistPage: React.FC<PlaylistPageProps> = ({
   console.log("PLAYLIST DEBUG: Filtered tracks:", filteredTracks.length);
 
   return (
-    <AppLayout>
-      <div className="container mx-auto max-w-5xl space-y-6 pt-4">
+    <div className="container mx-auto max-w-5xl space-y-6 pt-4">
         <PlaylistContent
           playlistTracks={filteredTracks}
           allPlaylistTracks={sortedPlaylistTracks}
@@ -125,8 +124,7 @@ const PlaylistPage: React.FC<PlaylistPageProps> = ({
           onConfirm={confirmClearAll}
         />
       </div>
-    </AppLayout>
-  );
-};
+    );
+  };
 
 export default PlaylistPage;

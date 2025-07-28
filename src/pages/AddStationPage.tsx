@@ -1,6 +1,6 @@
 
 import React from "react";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import AddUrlForm from "@/components/AddUrlForm";
 import ImportStationsFromCsv from "@/components/ImportStationsFromCsv";
@@ -37,7 +37,7 @@ const AddStationPage: React.FC = () => {
   };
 
   return (
-    <AppLayout>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-surface to-surface-container dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce" style={{ paddingTop: 'calc(5rem + max(env(safe-area-inset-top), 0px))' }}>
       <div className="container mx-auto max-w-5xl space-y-6 pt-4">
         <div className="max-w-lg mx-auto space-y-6">
           <Card className="bg-surface-container border border-outline-variant/30 rounded-lg elevation-1">
@@ -64,7 +64,7 @@ const AddStationPage: React.FC = () => {
           </Card>
         </div>
       </div>
-    </AppLayout>
+    </div>
   );
 };
 

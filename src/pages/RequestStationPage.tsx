@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppLayout } from "@/components/layout/AppLayout";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Mail } from "lucide-react";
@@ -79,7 +79,7 @@ const RequestStationPage: React.FC = () => {
   };
 
   return (
-    <AppLayout>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-surface to-surface-container dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce" style={{ paddingTop: 'calc(5rem + max(env(safe-area-inset-top), 0px))' }}>
       {/* FIXED Added proper gap between header and content */}
       <div className="container mx-auto max-w-2xl space-y-6 pt-4">
         <Card className="bg-gradient-to-br from-background/40 to-background/20 backdrop-blur-md border-border/30 elevation-2">
@@ -110,7 +110,7 @@ const RequestStationPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </AppLayout>
+    </div>
   );
 };
 

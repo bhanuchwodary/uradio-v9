@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TrackStateProvider } from "@/context/TrackStateContext";
 import { AudioPlayerProvider } from "@/context/AudioPlayerContext";
 import { PlaylistProvider } from "@/context/PlaylistContext";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import PlaylistPage from "@/pages/PlaylistPage";
@@ -30,8 +31,7 @@ const App = () => {
           <PlaylistProvider>
             <TrackStateWrapper randomMode={randomMode} volume={volume}>
               <Router>
-                <div className="min-h-screen bg-background">
-                  <InstallPrompt />
+                <AppLayoutWrapper randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume}>
                   <Routes>
                     <Route path="/" element={<PlaylistPage randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />} />
                     <Route path="/playlist" element={<PlaylistPage randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />} />
@@ -41,7 +41,7 @@ const App = () => {
                     <Route path="/request-station" element={<RequestStationPage />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </div>
+                </AppLayoutWrapper>
               </Router>
             </TrackStateWrapper>
           </PlaylistProvider>
@@ -66,6 +66,24 @@ const TrackStateWrapper: React.FC<{
     <AudioPlayerProvider tracks={tracks} randomMode={randomMode}>
       {children}
     </AudioPlayerProvider>
+  );
+};
+
+// AppLayout wrapper that has access to AudioPlayerProvider
+const AppLayoutWrapper: React.FC<{
+  children: React.ReactNode;
+  randomMode: boolean;
+  setRandomMode: (randomMode: boolean) => void;
+  volume: number;
+  setVolume: (volume: number) => void;
+}> = ({ children, randomMode, setRandomMode, volume, setVolume }) => {
+  return (
+    <div className="min-h-screen bg-background">
+      <InstallPrompt />
+      <AppLayout randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume}>
+        {children}
+      </AppLayout>
+    </div>
   );
 };
 
