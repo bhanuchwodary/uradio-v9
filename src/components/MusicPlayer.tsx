@@ -8,7 +8,6 @@ import PlayerControlsRow from "@/components/music-player/PlayerControlsRow";
 import PlayerVolume from "@/components/music-player/PlayerVolume";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { usePlayerCore } from "@/hooks/usePlayerCore";
-import { usePhoneCallHandling } from "@/hooks/usePhoneCallHandling";
 import { Track } from "@/types/track";
 
 interface MusicPlayerProps {
@@ -75,8 +74,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = memo(({
     setCurrentIndex,
   });
 
-  // Add phone call handling
-  usePhoneCallHandling(isPlaying, setIsPlaying);
+  // Phone call handling is now integrated into AudioPlayerContext
 
   // Show loading spinner if no tracks are available
   if (urls.length === 0) {

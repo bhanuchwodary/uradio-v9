@@ -22,8 +22,10 @@ export const useHlsHandler = ({
   const lastUrlRef = useRef<string | undefined>(undefined);
   const retryCountRef = useRef<number>(0);
   const loadTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const maxRetries = 3;
-  const loadTimeout = 15000; // 15 seconds timeout for initial load
+  const connectionHealthRef = useRef<NodeJS.Timeout | null>(null);
+  const maxRetries = 5; // Increased for better resilience
+  const loadTimeout = 20000; // 20 seconds timeout for initial load
+  const healthCheckInterval = 30000; // Check connection health every 30 seconds
 
   useEffect(() => {
     // Ensure global audio element exists
@@ -179,6 +181,21 @@ export const useHlsHandler = ({
           setLoading(false);
         });
 
+        // Enhanced recovery for buffering issues
+        hls.on(Hls.Events.BUFFER_FLUSHED, () => {
+          logger.debug("HLS buffer flushed");
+        });
+
+        // Track loading progress for better user feedback
+        hls.on(Hls.Events.FRAG_LOADING, () => {
+          logger.debug("HLS fragment loading");
+        });
+
+        // Additional monitoring for media state changes
+        hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+          logger.debug("HLS media attached successfully");
+        });
+
       } else {
         // Direct playbook for non-HLS or if HLS is not supported
         audio.src = url;
@@ -252,6 +269,26 @@ export const useHlsHandler = ({
     }
   }, [url, isPlaying, setIsPlaying, setLoading]);
 
+  // Periodic connection health check for live streams
+  useEffect(() => {
+    if (isPlaying && url) {
+      connectionHealthRef.current = setInterval(() => {
+        const audio = globalAudioRef.element;
+        if (audio && audio.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+          logger.warn("Connection health check failed, may need recovery");
+          // Don't automatically recover here - let the health monitor handle it
+        }
+      }, healthCheckInterval);
+
+      return () => {
+        if (connectionHealthRef.current) {
+          clearInterval(connectionHealthRef.current);
+          connectionHealthRef.current = null;
+        }
+      };
+    }
+  }, [isPlaying, url]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -262,6 +299,10 @@ export const useHlsHandler = ({
       if (loadTimeoutRef.current) {
         clearTimeout(loadTimeoutRef.current);
         loadTimeoutRef.current = null;
+      }
+      if (connectionHealthRef.current) {
+        clearInterval(connectionHealthRef.current);
+        connectionHealthRef.current = null;
       }
       // Clean up direct stream listeners
       const audio = globalAudioRef.element;

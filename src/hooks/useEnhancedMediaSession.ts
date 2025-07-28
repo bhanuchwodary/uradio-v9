@@ -2,6 +2,7 @@
 import { useEffect, useCallback, useRef } from "react";
 import { Track } from "@/types/track";
 import { logger } from "@/utils/logger";
+import { resetAudioStateForUserAction } from "@/components/music-player/audioInstance";
 
 interface UseEnhancedMediaSessionProps {
   currentTrack: Track | null;
@@ -58,6 +59,7 @@ export const useEnhancedMediaSession = ({
         // Core play/pause handlers (essential for all platforms)
         mediaSession.setActionHandler('play', () => {
           logger.debug("Media session: play action triggered");
+          resetAudioStateForUserAction(); // Clear any interruption flags
           onPlay();
         });
 

@@ -1,10 +1,13 @@
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useCallback } from 'react';
 import { Track } from '@/types/track';
 import { useHlsHandler } from '@/hooks/music-player/useHlsHandler';
 import { useEnhancedMediaSession } from '@/hooks/useEnhancedMediaSession';
 import { useNativeMediaControls } from '@/hooks/useNativeMediaControls';
+import { useStreamHealthMonitor } from '@/hooks/useStreamHealthMonitor';
+import { useEnhancedPhoneCallHandling } from '@/hooks/useEnhancedPhoneCallHandling';
 import { globalAudioRef } from '@/components/music-player/audioInstance';
+import { logger } from '@/utils/logger';
 import { AudioPlayerContextType, AudioPlayerProviderProps } from './types/AudioPlayerTypes';
 import { useAudioPlayerState } from './hooks/useAudioPlayerState';
 import { useAudioPlayerActions } from './hooks/useAudioPlayerActions';
@@ -72,6 +75,41 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({
     isPlaying,
     setIsPlaying,
     setLoading,
+  });
+
+  // Stream recovery function for health monitoring
+  const handleStreamRecovery = useCallback(() => {
+    if (currentTrack) {
+      logger.info("Triggering stream recovery", { track: currentTrack.name });
+      
+      // Force HLS handler to reinitialize by briefly changing the URL reference
+      const audio = globalAudioRef.element;
+      if (audio) {
+        audio.src = '';
+        audio.load();
+        
+        // Brief delay then restart
+        setTimeout(() => {
+          playTrack(currentTrack);
+        }, 1000);
+      }
+    }
+  }, [currentTrack, playTrack]);
+
+  // Enhanced interruption handling with stream recovery
+  useEnhancedPhoneCallHandling({
+    isPlaying,
+    setIsPlaying,
+    currentTrack,
+    onStreamRecovery: handleStreamRecovery,
+  });
+
+  // Stream health monitoring for detecting stalls and network issues
+  useStreamHealthMonitor({
+    isPlaying,
+    setIsPlaying,
+    currentTrack,
+    onRetryRequired: handleStreamRecovery,
   });
 
   // Audio event listeners
