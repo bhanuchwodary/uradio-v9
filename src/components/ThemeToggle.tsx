@@ -16,39 +16,47 @@ export function ThemeToggle({ children }: { children: React.ReactNode }) {
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="bg-surface-container/98 backdrop-blur-md border-outline-variant/30 elevation-2 rounded-xl mt-2 min-w-[120px]"
+        className="glass-surface elevation-3 rounded-2xl mt-2 min-w-[140px] p-2 animate-scale-in"
       >
         <DropdownMenuItem
           onClick={() => setTheme("light")}
-          className={`hover:bg-primary-container/60 focus:bg-primary-container/60 transition-all duration-200 ease-out rounded-lg mx-1 my-0.5 ${
-            theme === "light" ? "bg-primary-container/40 text-on-primary-container" : "text-on-surface"
+          className={`material-transition-fast rounded-xl mx-0 my-0.5 p-3 button-press-effect ${
+            theme === "light" 
+              ? "bg-primary-container text-on-primary-container elevation-1" 
+              : "text-on-surface hover:bg-secondary-container/30 hover:text-on-secondary-container"
           }`}
         >
-          Light
+          <span className="font-medium">Light</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("dark")}
-          className={`hover:bg-primary-container/60 focus:bg-primary-container/60 transition-all duration-200 ease-out rounded-lg mx-1 my-0.5 ${
-            theme === "dark" ? "bg-primary-container/40 text-on-primary-container" : "text-on-surface"
+          className={`material-transition-fast rounded-xl mx-0 my-0.5 p-3 button-press-effect ${
+            theme === "dark" 
+              ? "bg-primary-container text-on-primary-container elevation-1" 
+              : "text-on-surface hover:bg-secondary-container/30 hover:text-on-secondary-container"
           }`}
         >
-          Dark
+          <span className="font-medium">Dark</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("metallic")}
-          className={`hover:bg-primary-container/60 focus:bg-primary-container/60 transition-all duration-200 ease-out rounded-lg mx-1 my-0.5 ${
-            theme === "metallic" ? "bg-primary-container/40 text-on-primary-container" : "text-on-surface"
+          className={`material-transition-fast rounded-xl mx-0 my-0.5 p-3 button-press-effect ${
+            theme === "metallic" 
+              ? "bg-primary-container text-on-primary-container elevation-1" 
+              : "text-on-surface hover:bg-secondary-container/30 hover:text-on-secondary-container"
           }`}
         >
-          Metallic
+          <span className="font-medium">Metallic</span>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => setTheme("system")}
-          className={`hover:bg-primary-container/60 focus:bg-primary-container/60 transition-all duration-200 ease-out rounded-lg mx-1 my-0.5 ${
-            theme === "system" ? "bg-primary-container/40 text-on-primary-container" : "text-on-surface"
+          className={`material-transition-fast rounded-xl mx-0 my-0.5 p-3 button-press-effect ${
+            theme === "system" 
+              ? "bg-primary-container text-on-primary-container elevation-1" 
+              : "text-on-surface hover:bg-secondary-container/30 hover:text-on-secondary-container"
           }`}
         >
-          System
+          <span className="font-medium">System</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

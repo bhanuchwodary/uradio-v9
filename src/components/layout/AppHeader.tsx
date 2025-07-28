@@ -76,19 +76,19 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-surface-container/95 backdrop-blur-lg border-b border-outline-variant/20 z-20 elevation-1 ios-safe-left ios-safe-right" style={{ 
+    <header className="fixed top-0 left-0 right-0 glass-surface border-b border-outline-variant/20 z-20 elevation-2 ios-safe-left ios-safe-right" style={{ 
       paddingTop: 'max(env(safe-area-inset-top), 0px)',
       height: 'calc(5rem + max(env(safe-area-inset-top), 0px))'
     }}>
-      <div className="container mx-auto flex items-center h-full px-4 gap-4 w-full" style={{ minHeight: '5rem' }}>
+      <div className="responsive-container flex items-center h-full gap-4 w-full" style={{ minHeight: '5rem' }}>
         {/* Logo and Tagline */}
         <div className="flex-shrink-0 flex flex-col items-center">
           <img
             src={getLogoSrc()}
             alt="uRadio"
-            className={`h-10 w-auto object-contain transition-opacity duration-100 ${logoLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`h-10 w-auto object-contain material-transition ${logoLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
-          <p className="font-handwritten text-xs text-on-surface-variant mt-0.5 tracking-wide">
+          <p className="font-handwritten responsive-text-sm text-on-surface-variant mt-0.5 tracking-wide">
             it's ur radio
           </p>
         </div>
@@ -100,17 +100,20 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
               {/* Station Info */}
               <div className="flex-1 min-w-0">
                 <h3
-                  className="text-base font-bold truncate text-on-surface"
+                  className="responsive-text-base font-bold truncate text-on-surface material-transition"
                   title={currentTrack.name}
                 >
                   {currentTrack.name}
                 </h3>
                 <div className="flex items-center gap-2 mt-1">
                   {loading && (
-                    <p className="text-xs text-primary animate-pulse">Loading...</p>
+                    <div className="flex items-center gap-1">
+                      <div className="w-1 h-1 bg-primary rounded-full animate-pulse"></div>
+                      <p className="responsive-text-sm text-primary animate-pulse">Loading...</p>
+                    </div>
                   )}
                   {currentTrack.language && (
-                    <span className="inline-block px-2 py-0.5 text-xs bg-primary/20 text-primary rounded-full font-medium">
+                    <span className="inline-block px-2 py-0.5 responsive-text-sm bg-primary-container/80 text-on-primary-container rounded-full font-medium material-transition hover:bg-primary-container">
                       {currentTrack.language}
                     </span>
                   )}
@@ -134,7 +137,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           ) : (
             <div className="flex items-center w-full gap-2 sm:gap-3">
               <div className="flex-1 min-w-0">
-                <p className="text-base font-medium text-on-surface-variant truncate">
+                <p className="responsive-text-base font-medium text-on-surface-variant truncate">
                   Select a station to start playing
                 </p>
               </div>

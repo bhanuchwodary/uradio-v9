@@ -175,60 +175,66 @@ const Index: React.FC = () => {
   return (
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-gradient-to-br from-surface-container-lowest via-surface to-surface-container dark:from-surface-dim dark:via-surface dark:to-surface-bright ios-vh-fix ios-no-bounce" style={{ paddingTop: 'calc(5rem + max(env(safe-area-inset-top), 0px))' }}>
-        <div className="container mx-auto max-w-5xl space-y-6">
+        <div className="responsive-container max-w-7xl space-lg responsive-padding-y">
           {/* Player Card */}
           <ErrorBoundary fallback={
-            <div className="text-center p-4 text-muted-foreground">
-              Player temporarily unavailable
+            <div className="text-center p-8 text-on-surface-variant glass-card rounded-2xl">
+              <p className="responsive-text-base">Player temporarily unavailable</p>
             </div>
           }>
-            <HomePagePlayer
-              currentTrack={currentTrackState}
-              isPlaying={isPlaying}
-              handlePlayPause={handlePlayPause}
-              handleNext={handleNext}
-              handlePrevious={handlePrevious}
-              volume={volume}
-              setVolume={setVolume}
-              loading={loading}
-            />
+            <div className="animate-fade-in">
+              <HomePagePlayer
+                currentTrack={currentTrackState}
+                isPlaying={isPlaying}
+                handlePlayPause={handlePlayPause}
+                handleNext={handleNext}
+                handlePrevious={handlePrevious}
+                volume={volume}
+                setVolume={setVolume}
+                loading={loading}
+              />
+            </div>
           </ErrorBoundary>
 
           {/* Favorites Section */}
           <ErrorBoundary fallback={
-            <div className="text-center p-4 text-muted-foreground">
-              Favorites section temporarily unavailable
+            <div className="text-center p-8 text-on-surface-variant glass-card rounded-2xl">
+              <p className="responsive-text-base">Favorites section temporarily unavailable</p>
             </div>
           }>
-            <FavoritesSection 
-              favoriteStations={favoriteStations}
-              currentIndex={currentIndex}
-              currentTrackUrl={currentTrackState?.url}
-              isPlaying={isPlaying}
-              onSelectStation={handleSelectStation}
-              onToggleFavorite={handleToggleFavorite}
-              onDeleteStation={handleConfirmDelete}
-            />
+            <div className="animate-fade-in" style={{ animationDelay: '100ms' }}>
+              <FavoritesSection 
+                favoriteStations={favoriteStations}
+                currentIndex={currentIndex}
+                currentTrackUrl={currentTrackState?.url}
+                isPlaying={isPlaying}
+                onSelectStation={handleSelectStation}
+                onToggleFavorite={handleToggleFavorite}
+                onDeleteStation={handleConfirmDelete}
+              />
+            </div>
           </ErrorBoundary>
           
           {/* All Stations Section with Tabs */}
           <ErrorBoundary fallback={
-            <div className="text-center p-4 text-muted-foreground">
-              Stations section temporarily unavailable
+            <div className="text-center p-8 text-on-surface-variant glass-card rounded-2xl">
+              <p className="responsive-text-base">Stations section temporarily unavailable</p>
             </div>
           }>
-            <StationsTabsSection
-              popularStations={popularStations}
-              userStations={userStations}
-              featuredStations={featuredStations}
-              currentIndex={currentIndex}
-              currentTrackUrl={currentTrackState?.url}
-              isPlaying={isPlaying}
-              onSelectStation={handleSelectStation}
-              onEditStation={handleEditStation}
-              onDeleteStation={handleConfirmDelete}
-              onToggleFavorite={handleToggleFavorite}
-            />
+            <div className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+              <StationsTabsSection
+                popularStations={popularStations}
+                userStations={userStations}
+                featuredStations={featuredStations}
+                currentIndex={currentIndex}
+                currentTrackUrl={currentTrackState?.url}
+                isPlaying={isPlaying}
+                onSelectStation={handleSelectStation}
+                onEditStation={handleEditStation}
+                onDeleteStation={handleConfirmDelete}
+                onToggleFavorite={handleToggleFavorite}
+              />
+            </div>
           </ErrorBoundary>
           
           {/* Dialogs for editing and deleting */}

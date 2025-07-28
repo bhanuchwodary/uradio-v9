@@ -56,18 +56,17 @@ export const StationCard: React.FC<StationCardProps> = memo(({
   return (
     <Card 
       className={cn(
-        "relative overflow-hidden group material-transition cursor-pointer h-full ios-touch-target",
-        "transform hover:scale-105 active:scale-95 border-0 backdrop-blur-sm elevation-1 hover:elevation-3",
-        "hover:shadow-xl hover:-translate-y-1 aspect-square",
+        "relative overflow-hidden group modern-card cursor-pointer h-full ios-touch-target",
+        "interactive-scale aspect-square border-0",
         isSelected 
-          ? "bg-gradient-to-br from-primary/20 to-primary/10 shadow-lg ring-2 ring-primary/30" 
+          ? "bg-gradient-to-br from-primary-container/40 to-primary-container/20 ring-2 ring-primary/40 elevation-primary-2" 
           : inPlaylist && actionIcon === "add"
-          ? "bg-gradient-to-br from-green-500/10 to-green-500/5 shadow-md ring-1 ring-green-500/20"
+          ? "bg-gradient-to-br from-green-500/15 to-green-500/5 ring-1 ring-green-500/30 elevation-2"
           : isProcessing
-          ? "bg-gradient-to-br from-blue-500/10 to-blue-500/5 shadow-md ring-1 ring-blue-500/20"
-          : "bg-gradient-to-br from-surface-container/80 to-surface-container/60 hover:from-accent/40 hover:to-accent/20",
+          ? "bg-gradient-to-br from-blue-500/15 to-blue-500/5 ring-1 ring-blue-500/30 elevation-2"
+          : "glass-card hover:bg-gradient-to-br hover:from-secondary-container/30 hover:to-secondary-container/10",
         // Disable hover effects if already in playlist or being processed
-        isDisabled && "hover:scale-100 cursor-default"
+        isDisabled && "hover:scale-100 cursor-default opacity-75"
       )}
       onClick={handlePlayClick}
       role="button"
@@ -89,12 +88,12 @@ export const StationCard: React.FC<StationCardProps> = memo(({
               onToggleFavorite();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
-              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
-              "active:scale-90 touch-manipulation",
+              "w-7 h-7 rounded-full flex items-center justify-center material-transition-fast elevation-1",
+              "glass-surface button-press-effect",
+              "hover:elevation-2",
               station.isFavorite 
-                ? "text-yellow-500" 
-                : "text-on-surface-variant hover:text-yellow-500"
+                ? "text-yellow-500 bg-yellow-500/20 ring-1 ring-yellow-500/30" 
+                : "text-on-surface-variant hover:text-yellow-500 hover:bg-yellow-500/10"
             )}
             aria-label={station.isFavorite ? "Remove from favorites" : "Add to favorites"}
           >
@@ -112,10 +111,9 @@ export const StationCard: React.FC<StationCardProps> = memo(({
               onDelete();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
-              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
-              "active:scale-90 touch-manipulation",
-              "text-destructive hover:bg-destructive/10"
+              "w-7 h-7 rounded-full flex items-center justify-center material-transition-fast elevation-1",
+              "glass-surface button-press-effect hover:elevation-2",
+              "text-error hover:text-error/80 hover:bg-error/10"
             )}
             aria-label={context === "playlist" ? "Remove from playlist" : "Delete station"}
           >
@@ -133,10 +131,9 @@ export const StationCard: React.FC<StationCardProps> = memo(({
               onEdit();
             }}
             className={cn(
-              "w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200",
-              "bg-surface-container/80 backdrop-blur-sm shadow-sm",
-              "active:scale-90 touch-manipulation",
-              "text-blue-500 hover:bg-blue-500/10"
+              "w-7 h-7 rounded-full flex items-center justify-center material-transition-fast elevation-1",
+              "glass-surface button-press-effect hover:elevation-2",
+              "text-on-surface-variant hover:text-on-surface hover:bg-on-surface/10"
             )}
             aria-label="Edit station"
           >

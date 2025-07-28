@@ -215,13 +215,56 @@
     -webkit-tap-highlight-color: transparent;
     font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     font-size: max(16px, 1rem);
+    scroll-behavior: smooth;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     text-rendering: optimizeLegibility;
+    font-variant-ligatures: common-ligatures;
+    font-feature-settings: "kern", "liga", "tnum";
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
+    line-height: 1.6;
+  }
+
+  /* Enhanced Typography Scale */
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+    line-height: 1.2;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight;
+    line-height: 1.3;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight;
+    line-height: 1.4;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl font-medium tracking-tight;
+    line-height: 1.4;
+  }
+
+  h5 {
+    @apply text-base md:text-lg font-medium;
+    line-height: 1.5;
+  }
+
+  h6 {
+    @apply text-sm md:text-base font-medium;
+    line-height: 1.5;
+  }
+
+  p {
+    @apply text-base leading-relaxed;
+  }
+
+  small {
+    @apply text-sm;
   }
   
   input, select, textarea {
@@ -232,6 +275,7 @@
     border-radius: 0;
     background-clip: padding-box;
     font-family: inherit;
+    transition: all 0.2s ease-out;
   }
   
   button {
@@ -242,34 +286,80 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     font-family: inherit;
+    transition: all 0.2s ease-out;
+  }
+
+  /* Focus Management for Accessibility */
+  :focus-visible {
+    outline: 2px solid rgb(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
 /* Enhanced Material Design 3 Utilities */
 @layer utilities {
-  /* Material Design 3 Elevation System */
+  /* Enhanced Material Design 3 Elevation System with dynamic colors */
   .elevation-0 {
     box-shadow: none;
   }
   
   .elevation-1 {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    box-shadow: 
+      0px 1px 2px 0px rgba(0, 0, 0, 0.3), 
+      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   }
   
   .elevation-2 {
-    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 
+      0px 1px 2px 0px rgba(0, 0, 0, 0.3), 
+      0px 2px 6px 2px rgba(0, 0, 0, 0.15);
   }
   
   .elevation-3 {
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: 
+      0px 1px 3px 0px rgba(0, 0, 0, 0.3), 
+      0px 4px 8px 3px rgba(0, 0, 0, 0.15);
   }
   
   .elevation-4 {
-    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.3), 0px 6px 10px 4px rgba(0, 0, 0, 0.15);
+    box-shadow: 
+      0px 2px 3px 0px rgba(0, 0, 0, 0.3), 
+      0px 6px 10px 4px rgba(0, 0, 0, 0.15);
   }
   
   .elevation-5 {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.3), 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 
+      0px 4px 4px 0px rgba(0, 0, 0, 0.3), 
+      0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Enhanced elevation with primary color tint */
+  .elevation-primary-1 {
+    box-shadow: 
+      0px 1px 2px 0px rgba(var(--primary) / 0.2), 
+      0px 1px 3px 1px rgba(var(--primary) / 0.1);
+  }
+  
+  .elevation-primary-2 {
+    box-shadow: 
+      0px 1px 2px 0px rgba(var(--primary) / 0.25), 
+      0px 2px 6px 2px rgba(var(--primary) / 0.15);
+  }
+  
+  .elevation-primary-3 {
+    box-shadow: 
+      0px 1px 3px 0px rgba(var(--primary) / 0.3), 
+      0px 4px 8px 3px rgba(var(--primary) / 0.2);
   }
 
   /* Ripple Effect for Buttons */
@@ -320,30 +410,117 @@
     @apply bg-[rgb(var(--surface-container-highest))];
   }
 
-  /* Enhanced transitions */
+  /* Enhanced Material Motion System */
   .material-transition {
-    @apply transition-all duration-300 ease-out;
+    transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   .material-transition-fast {
-    @apply transition-all duration-200 ease-out;
+    transition: all 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   .material-transition-slow {
-    @apply transition-all duration-500 ease-out;
+    transition: all 500ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
-  /* Enhanced responsive utilities */
+  .material-transition-decelerate {
+    transition: all 300ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+
+  .material-transition-accelerate {
+    transition: all 300ms cubic-bezier(0.4, 0.0, 1, 1);
+  }
+
+  .material-transition-standard {
+    transition: all 300ms cubic-bezier(0.2, 0.0, 0, 1);
+  }
+
+  /* Interactive states */
+  .interactive-scale {
+    @apply material-transition-fast transform-gpu;
+  }
+
+  .interactive-scale:hover {
+    transform: scale(1.02);
+  }
+
+  .interactive-scale:active {
+    transform: scale(0.98);
+  }
+
+  .interactive-lift {
+    @apply material-transition transform-gpu;
+  }
+
+  .interactive-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  .interactive-lift:active {
+    transform: translateY(0px);
+  }
+
+  /* Enhanced responsive utilities with improved spacing */
   .responsive-container {
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
   .responsive-padding {
-    @apply px-4 sm:px-6 md:px-8;
+    @apply px-4 sm:px-6 md:px-8 lg:px-12;
+  }
+  
+  .responsive-padding-y {
+    @apply py-4 sm:py-6 md:py-8 lg:py-12;
   }
   
   .responsive-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6;
+  }
+  
+  .responsive-station-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3 sm:gap-4;
+  }
+
+  /* Responsive text scaling */
+  .responsive-text-sm {
+    @apply text-xs sm:text-sm;
+  }
+  
+  .responsive-text-base {
+    @apply text-sm sm:text-base;
+  }
+  
+  .responsive-text-lg {
+    @apply text-base sm:text-lg md:text-xl;
+  }
+  
+  .responsive-text-xl {
+    @apply text-lg sm:text-xl md:text-2xl;
+  }
+
+  /* Enhanced spacing system */
+  .space-micro {
+    @apply space-y-1;
+  }
+  
+  .space-xs {
+    @apply space-y-2;
+  }
+  
+  .space-sm {
+    @apply space-y-3;
+  }
+  
+  .space-md {
+    @apply space-y-4 sm:space-y-6;
+  }
+  
+  .space-lg {
+    @apply space-y-6 sm:space-y-8;
+  }
+  
+  .space-xl {
+    @apply space-y-8 sm:space-y-12;
   }
   
   /* Enhanced iOS Safe Area Support */
@@ -385,13 +562,63 @@
     scroll-behavior: smooth;
   }
 
-  /* Enhanced glassmorphism effects */
+  /* Enhanced glassmorphism effects with better performance */
   .glass-surface {
-    @apply backdrop-blur-xl bg-surface-container/90 border-outline-variant/20;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(var(--surface-container) / 0.9);
+    border: 1px solid rgba(var(--outline-variant) / 0.2);
   }
   
   .glass-primary {
-    @apply backdrop-blur-xl bg-primary-container/80 border-primary/20;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(var(--primary-container) / 0.8);
+    border: 1px solid rgba(var(--primary) / 0.2);
+  }
+
+  .glass-card {
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    background: rgba(var(--surface-container) / 0.7);
+    border: 1px solid rgba(var(--outline-variant) / 0.15);
+  }
+
+  /* Modern card styling */
+  .modern-card {
+    @apply glass-card elevation-1 rounded-2xl material-transition interactive-lift;
+    border-radius: 1rem;
+  }
+
+  .modern-card:hover {
+    @apply elevation-3;
+  }
+
+  /* Enhanced button states */
+  .button-press-effect {
+    @apply material-transition-fast transform-gpu active:scale-95;
+  }
+
+  /* Status indicators */
+  .status-indicator {
+    @apply relative;
+  }
+
+  .status-indicator::after {
+    content: '';
+    @apply absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full ring-2 ring-background animate-pulse;
+  }
+
+  .status-indicator.playing::after {
+    @apply bg-green-500;
+  }
+
+  .status-indicator.buffering::after {
+    @apply bg-yellow-500;
+  }
+
+  .status-indicator.error::after {
+    @apply bg-red-500;
   }
 
   /* Enhanced metallic theme contouring */
