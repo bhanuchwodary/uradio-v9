@@ -8,6 +8,7 @@ import { StationCardInfo } from "./StationCardInfo";
 import { StationCardActions } from "./StationCardActions";
 import { StationCardProps } from "./types";
 import { logger } from "@/utils/logger";
+import { useOptimizedPerformance } from "@/hooks/useOptimizedPerformance";
 
 export const StationCard: React.FC<StationCardProps> = memo(({
   station,
@@ -22,6 +23,8 @@ export const StationCard: React.FC<StationCardProps> = memo(({
   inPlaylist = false,
   isAddingToPlaylist = false
 }) => {
+  const { setRef } = useOptimizedPerformance('StationCard', [station.url, isPlaying]);
+  
   const handlePlayClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     

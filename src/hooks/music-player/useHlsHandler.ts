@@ -4,6 +4,7 @@ import Hls from "hls.js";
 import { globalAudioRef, updateGlobalPlaybackState } from "@/components/music-player/audioInstance";
 import { logger } from "@/utils/logger";
 import { detectStreamType, configureAudioForStream, handleDirectStreamError } from "@/utils/streamHandler";
+import { useStreamErrorHandling } from "@/hooks/useEnhancedErrorHandling";
 
 interface UseHlsHandlerProps {
   url: string | undefined;
@@ -18,6 +19,7 @@ export const useHlsHandler = ({
   setIsPlaying,
   setLoading
 }: UseHlsHandlerProps) => {
+  const { handleStreamError, clearError } = useStreamErrorHandling();
   const hlsRef = useRef<Hls | null>(null);
   const lastUrlRef = useRef<string | undefined>(undefined);
   const retryCountRef = useRef<number>(0);
@@ -113,47 +115,21 @@ export const useHlsHandler = ({
         hlsRef.current = hls;
 
         hls.on(Hls.Events.ERROR, (event, data) => {
-          logger.error("HLS Error:", data);
           if (data.fatal) {
-            const backoffDelay = Math.min(1000 * Math.pow(2, retryCountRef.current), 8000);
+            const retryCallback = () => {
+              if (retryCountRef.current < maxRetries) {
+                retryCountRef.current++;
+                hls.recoverMediaError();
+              }
+            };
             
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                logger.warn(`HLS network error, retrying in ${backoffDelay}ms...`);
-                if (retryCountRef.current < maxRetries) {
-                  retryCountRef.current++;
-                  setTimeout(() => {
-                    hls.recoverMediaError();
-                  }, backoffDelay);
-                } else {
-                  logger.error("Max HLS network retries reached. Stopping playback.");
-                  setIsPlaying(false);
-                  setLoading(false);
-                  updateGlobalPlaybackState(false, false, false);
-                }
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
-                logger.warn(`HLS media error, retrying in ${backoffDelay}ms...`);
-                if (retryCountRef.current < maxRetries) {
-                  retryCountRef.current++;
-                  setTimeout(() => {
-                    hls.recoverMediaError();
-                  }, backoffDelay);
-                } else {
-                  logger.error("Max HLS media retries reached. Stopping playback.");
-                  setIsPlaying(false);
-                  setLoading(false);
-                  updateGlobalPlaybackState(false, false, false);
-                }
-                break;
-              default:
-                logger.error("Fatal HLS error, destroying HLS instance.", data);
-                hls.destroy();
-                hlsRef.current = null;
-                setIsPlaying(false);
-                setLoading(false);
-                updateGlobalPlaybackState(false, false, false);
-                break;
+            const error = new Error(`HLS ${data.type}: ${data.details}`);
+            handleStreamError(error, url || '', retryCallback);
+            
+            if (retryCountRef.current >= maxRetries) {
+              setIsPlaying(false);
+              setLoading(false);
+              updateGlobalPlaybackState(false, false, false);
             }
           }
         });
@@ -161,6 +137,8 @@ export const useHlsHandler = ({
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           logger.debug("HLS manifest parsed, ready to play");
           setLoading(false);
+          clearError(); // Clear any previous errors
+          retryCountRef.current = 0; // Reset retry count on success
           if (loadTimeoutRef.current) {
             clearTimeout(loadTimeoutRef.current);
             loadTimeoutRef.current = null;
