@@ -6,8 +6,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TrackStateProvider } from "@/context/TrackStateContext";
 import { AudioPlayerProvider } from "@/context/AudioPlayerContext";
 import { PlaylistProvider } from "@/context/PlaylistContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { SyncManager } from "@/components/sync/SyncManager";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import PlaylistPage from "@/pages/PlaylistPage";
 import AddStationPage from "@/pages/AddStationPage";
@@ -27,25 +29,27 @@ const App = () => {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark" storageKey="uradio-theme">
-        <TrackStateProvider>
-          <PlaylistProvider>
-            <TrackStateWrapper randomMode={randomMode} volume={volume}>
-              <Router>
-                <AppLayoutWrapper randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume}>
-                  <Routes>
-                    <Route path="/" element={<PlaylistPage randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />} />
-                    <Route path="/playlist" element={<PlaylistPage randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />} />
-                    <Route path="/add" element={<AddStationPage />} />
-                    <Route path="/add-station" element={<AddStationPage />} />
-                    <Route path="/station-list" element={<StationListPage />} />
-                    <Route path="/request-station" element={<RequestStationPage />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </AppLayoutWrapper>
-              </Router>
-            </TrackStateWrapper>
-          </PlaylistProvider>
-        </TrackStateProvider>
+        <AuthProvider>
+          <TrackStateProvider>
+            <PlaylistProvider>
+              <TrackStateWrapper randomMode={randomMode} volume={volume}>
+                <Router>
+                  <AppLayoutWrapper randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume}>
+                    <Routes>
+                      <Route path="/" element={<PlaylistPage randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />} />
+                      <Route path="/playlist" element={<PlaylistPage randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume} />} />
+                      <Route path="/add" element={<AddStationPage />} />
+                      <Route path="/add-station" element={<AddStationPage />} />
+                      <Route path="/station-list" element={<StationListPage />} />
+                      <Route path="/request-station" element={<RequestStationPage />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </AppLayoutWrapper>
+                </Router>
+              </TrackStateWrapper>
+            </PlaylistProvider>
+          </TrackStateProvider>
+        </AuthProvider>
         <Toaster />
       </ThemeProvider>
     </ErrorBoundary>
@@ -80,6 +84,7 @@ const AppLayoutWrapper: React.FC<{
   return (
     <div className="min-h-screen bg-background">
       <InstallPrompt />
+      <SyncManager />
       <AppLayout randomMode={randomMode} setRandomMode={setRandomMode} volume={volume} setVolume={setVolume}>
         {children}
       </AppLayout>

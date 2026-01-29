@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@/components/ThemeProvider";
 import { MusicPlayer } from "@/components/ui/player/MusicPlayer";
 import { useAudioPlayer } from "@/context/AudioPlayerContext";
+import { UserMenu } from "@/components/auth/UserMenu";
 import { cn } from "@/lib/utils";
 
 interface AppHeaderProps {
@@ -156,6 +157,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
               </div>
             </div>
           )}
+        </div>
+
+        {/* User Menu */}
+        <div className="flex-shrink-0 ml-2">
+          <UserMenu compact />
         </div>
       </div>
     </header>
