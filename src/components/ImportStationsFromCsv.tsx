@@ -45,15 +45,22 @@ const ImportStationsFromCsv: React.FC<ImportStationsFromCsvProps> = ({ onImport 
         const parts = line.split(',').map(part => part.trim());
         
         if (parts.length >= 2) {
-          const station = { 
-            name: parts[0], 
-            url: parts[1],
-            language: parts[2] || ""  // Get language if available
-          };
+          const name = parts[0];
+          const url = parts[1];
+          const language = parts[2] || "";
           
-          // Basic validation
-          if (station.name && station.url) {
-            stations.push(station);
+          // Validate URL format and scheme
+          if (name && url) {
+            try {
+              const parsed = new URL(url);
+              if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+                continue; // Skip non-http(s) URLs
+              }
+              stations.push({ name, url, language });
+            } catch {
+              // Skip invalid URLs silently
+              continue;
+            }
           }
         }
       }
