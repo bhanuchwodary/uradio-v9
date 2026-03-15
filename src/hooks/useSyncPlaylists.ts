@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
-import { usePlaylist } from "@/context/PlaylistContext";
+import { usePlaylist, PlaylistTrack } from "@/context/PlaylistContext";
 import { Track } from "@/types/track";
 import { logger } from "@/utils/logger";
 import { useToast } from "@/hooks/use-toast";
@@ -20,12 +20,12 @@ interface DbPlaylistItem {
 
 export const useSyncPlaylists = () => {
   const { user } = useAuth();
-  const { playlistTracks, addToPlaylist, clearPlaylist } = usePlaylist();
+  const { playlistTracks, addToPlaylist, removeFromPlaylist, clearPlaylist } = usePlaylist();
   const { toast } = useToast();
   const isSyncing = useRef(false);
   const lastSyncRef = useRef<string | null>(null);
 
-  // Sync playlist from cloud to local
+  // Sync playlist from cloud to local (merge: add cloud tracks not already local)
   const syncFromCloud = useCallback(async () => {
     if (!user || isSyncing.current) return;
 
@@ -43,7 +43,6 @@ export const useSyncPlaylists = () => {
       }
 
       if (cloudPlaylist && cloudPlaylist.length > 0) {
-        // Convert to Track format and add to local playlist
         const cloudTracks: Track[] = (cloudPlaylist as DbPlaylistItem[]).map((item) => ({
           url: item.station_url,
           name: item.station_name,
@@ -53,35 +52,47 @@ export const useSyncPlaylists = () => {
           playTime: 0,
         }));
 
-        // Only add tracks that aren't already in the playlist
-        const existingUrls = new Set(playlistTracks.map(t => t.url));
+        const existingUrls = new Set(playlistTracks.map(t => t.url.toLowerCase().trim()));
+        let addedCount = 0;
         cloudTracks.forEach(track => {
-          if (!existingUrls.has(track.url)) {
+          if (!existingUrls.has(track.url.toLowerCase().trim())) {
             addToPlaylist(track);
+            addedCount++;
           }
         });
 
-        logger.debug("Synced playlist from cloud", { count: cloudPlaylist.length });
+        if (addedCount > 0) {
+          logger.info("Synced playlist from cloud", { addedCount, totalCloud: cloudPlaylist.length });
+          toast({
+            title: "Playlist synced",
+            description: `${addedCount} station(s) loaded from cloud.`,
+          });
+        }
       }
     } catch (error) {
       logger.error("Error syncing playlist from cloud", error);
     } finally {
       isSyncing.current = false;
     }
-  }, [user, playlistTracks, addToPlaylist]);
+  }, [user, playlistTracks, addToPlaylist, toast]);
 
-  // Sync entire playlist to cloud
+  // Sync entire local playlist to cloud (replaces cloud data)
   const syncPlaylistToCloud = useCallback(async () => {
-    if (!user || playlistTracks.length === 0) return;
+    if (!user) return;
 
     try {
-      // First, delete existing playlist items
+      // Delete existing cloud playlist
       await supabase
         .from("playlists")
         .delete()
         .eq("user_id", user.id);
 
-      // Then insert all current playlist items
+      if (playlistTracks.length === 0) {
+        logger.debug("Cloud playlist cleared (local is empty)");
+        return;
+      }
+
+      // Insert all current playlist items
       const playlistData = playlistTracks.map((track, index) => ({
         user_id: user.id,
         station_id: track.url,
@@ -104,85 +115,6 @@ export const useSyncPlaylists = () => {
     }
   }, [user, playlistTracks]);
 
-  // Add single item to cloud playlist
-  const addToCloudPlaylist = useCallback(async (track: Track) => {
-    if (!user) return;
-
-    try {
-      // Get current max position
-      const { data: maxPos } = await supabase
-        .from("playlists")
-        .select("position")
-        .eq("user_id", user.id)
-        .order("position", { ascending: false })
-        .limit(1)
-        .single();
-
-      const nextPosition = maxPos ? maxPos.position + 1 : 0;
-
-      const { error } = await supabase.from("playlists").upsert({
-        user_id: user.id,
-        station_id: track.url,
-        station_name: track.name,
-        station_url: track.url,
-        station_logo: null,
-        station_genre: track.language || null,
-        position: nextPosition,
-      }, {
-        onConflict: "user_id,station_id"
-      });
-
-      if (error) {
-        logger.error("Error adding to cloud playlist", error);
-      } else {
-        logger.debug("Added to cloud playlist", { name: track.name });
-      }
-    } catch (error) {
-      logger.error("Error adding to cloud playlist", error);
-    }
-  }, [user]);
-
-  // Remove item from cloud playlist
-  const removeFromCloudPlaylist = useCallback(async (track: Track) => {
-    if (!user) return;
-
-    try {
-      const { error } = await supabase
-        .from("playlists")
-        .delete()
-        .eq("user_id", user.id)
-        .eq("station_id", track.url);
-
-      if (error) {
-        logger.error("Error removing from cloud playlist", error);
-      } else {
-        logger.debug("Removed from cloud playlist", { name: track.name });
-      }
-    } catch (error) {
-      logger.error("Error removing from cloud playlist", error);
-    }
-  }, [user]);
-
-  // Clear cloud playlist
-  const clearCloudPlaylist = useCallback(async () => {
-    if (!user) return;
-
-    try {
-      const { error } = await supabase
-        .from("playlists")
-        .delete()
-        .eq("user_id", user.id);
-
-      if (error) {
-        logger.error("Error clearing cloud playlist", error);
-      } else {
-        logger.debug("Cleared cloud playlist");
-      }
-    } catch (error) {
-      logger.error("Error clearing cloud playlist", error);
-    }
-  }, [user]);
-
   // Initial sync when user logs in
   useEffect(() => {
     if (user && lastSyncRef.current !== user.id) {
@@ -198,8 +130,5 @@ export const useSyncPlaylists = () => {
   return {
     syncPlaylistToCloud,
     syncFromCloud,
-    addToCloudPlaylist,
-    removeFromCloudPlaylist,
-    clearCloudPlaylist,
   };
 };
